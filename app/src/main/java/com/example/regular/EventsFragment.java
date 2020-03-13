@@ -86,7 +86,7 @@ public class EventsFragment extends Fragment {
 
 
         Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(new TasksFragment(), "Calendar");
+        adapter.addFragment(new CalendarFragment(), "Calendar");
         adapter.addFragment(new TasksFragment(), "Next 7 Days");
         viewPager.setAdapter(adapter);
 
