@@ -5,19 +5,28 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,7 +61,17 @@ public class CalendarFragment extends Fragment {
     HorizontalCalendar horizontalCalendar;
     Dialog mdialog;
     FloatingActionButton floatingActionButton;
-    EditText start_time_edittext;
+    EditText eventHeading;
+    DatePicker eventDatePicker;
+    TimePicker startTimePicker,endTimePicker;
+    Events events;
+
+    FirebaseDatabase database;
+    DatabaseReference ref;
+    GoogleSignInAccount acct;
+
+    private Context mContext;
+    private AppCompatActivity mActivity;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -91,10 +110,91 @@ public class CalendarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_calendar, container, false);
 
+        acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+        database=FirebaseDatabase.getInstance();
+        ref=database.getReference("Events");
+        events=new Events();
+
         floatingActionButton=view.findViewById(R.id.fab_add);
         floatingActionButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View view){
+                Button addEventButton = mdialog.findViewById(R.id.add_event_btn);
+                addEventButton.setOnClickListener(new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
+                    @Override
+                    public void onClick(View v) {
+                        eventHeading=mdialog.findViewById(R.id.event_heading);
+                        eventDatePicker=mdialog.findViewById(R.id.event_date);
+                        startTimePicker=mdialog.findViewById(R.id.start_time);
+                        endTimePicker=mdialog.findViewById(R.id.end_time);
+                        String formattedTime = "";
+                        int hour = startTimePicker.getHour();
+                        String sHour = "00";
+                        if(hour < 10){
+                            sHour = "0"+hour;
+                        } else {
+                            sHour = String.valueOf(hour);
+                        }
+
+                        int minute = startTimePicker.getCurrentMinute();
+                        String sMinute = "00";
+                        if(minute < 10){
+                            sMinute = "0"+minute;
+                        } else {
+                            sMinute = String.valueOf(minute);
+                        }
+
+                        formattedTime = sHour+":"+sMinute;
+                        events.setStartEventTime(formattedTime);
+
+                        hour = endTimePicker.getHour();
+                        sHour = "00";
+                        if(hour < 10){
+                            sHour = "0"+hour;
+                        } else {
+                            sHour = String.valueOf(hour);
+                        }
+
+                        minute = startTimePicker.getCurrentMinute();
+                        sMinute = "00";
+                        if(minute < 10){
+                            sMinute = "0"+minute;
+                        } else {
+                            sMinute = String.valueOf(minute);
+                        }
+
+                        formattedTime = sHour+":"+sMinute;
+                        events.setEndEventTime(formattedTime);
+
+                        String day = "00";
+                        int d=eventDatePicker.getDayOfMonth();
+                        if(d<10){
+                            day="0"+Integer.toString(d);
+                        }
+                        else{
+                            day=Integer.toString(d);
+                        }
+
+                        String month = "00";
+                        int m=eventDatePicker.getMonth()+1;
+                        if(m<10){
+                            month="0"+Integer.toString(m);
+                        }
+                        else{
+                            month=Integer.toString(m);
+                        }
+
+                        String year = Integer.toString(eventDatePicker.getYear());
+                        formattedTime=day+"-"+month+"-"+year;
+
+                        ref.child(acct.getId()).child(formattedTime).child(eventHeading.getText().toString()).setValue(events);
+                        Toast.makeText(mContext,"Event Added",Toast.LENGTH_LONG).show();
+                        mdialog.dismiss();
+
+
+                    }
+                });
                 mdialog.show();
             }
         });
@@ -145,6 +245,8 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext=context;
+        mActivity=(AppCompatActivity)mContext;
 
     }
 

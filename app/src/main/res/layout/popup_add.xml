@@ -25,6 +25,31 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Heading"
+                android:background="@color/black"
+                android:padding="2dp"
+                android:textColor="@color/cherry_tomato"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                >
+            </TextView>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/event_heading"
+                android:inputType="text"
+                android:gravity="start"
+                android:background="@color/black"
+                android:textColor="@color/white"
+                android:textColorHint="@color/grey"
+                android:padding="2dp"
+                android:textSize="24sp"
+                android:hint="Write a heading of your event...">
+            </EditText>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Event Date"
                 android:background="@color/black"
                 android:padding="2dp"
@@ -78,31 +103,7 @@
                 android:theme="@style/TimePickerTheme"
                 android:background="@color/black">
             </TimePicker>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Description"
-                android:background="@color/black"
-                android:padding="2dp"
-                android:textColor="@color/cherry_tomato"
-                android:textSize="18sp"
-                android:gravity="center"
-                android:textStyle="bold"
-                >
-            </TextView>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/event_description"
-                android:inputType="textMultiLine"
-                android:minLines="10"
-                android:gravity="start"
-                android:background="@color/black"
-                android:textColor="@color/white"
-                android:textColorHint="@color/grey"
-                android:padding="2dp"
-                android:hint="Write a short description of your event...">
-            </EditText>
+
         </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
