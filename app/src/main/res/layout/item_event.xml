@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="4dp"
+        android:padding="2dp"
+        android:background="@drawable/shape_rounded_rectangle">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="14dp"
+            android:tint="@color/cherry_tomato"
+            android:src="@drawable/ic_other"
+            android:id="@+id/item_icon">
+        </ImageView>
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="Schedule"
+            android:textColor="@color/cherry_tomato"
+            android:layout_marginLeft="4dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/item_label"></TextView>
+        <TextView
+            android:layout_width="148dp"
+            android:layout_height="wrap_content"
+            android:text="Heading"
+            android:textSize="18sp"
+            android:id="@+id/item_heading"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"></TextView>
+
+        <TextView
+            android:id="@+id/item_start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:text="02:30"
+            android:textColor="@color/white"
+            android:textSize="14sp"></TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textColor="@color/white"
+            android:layout_marginLeft="4dp"
+            android:textSize="14sp"
+            android:layout_centerVertical="true"
+            android:id="@+id/item_hyphen"></TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="04:30"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="4dp"
+            android:id="@+id/item_end_time"
+            android:layout_centerVertical="true"></TextView>
+
+    </LinearLayout>
+
+</LinearLayout>

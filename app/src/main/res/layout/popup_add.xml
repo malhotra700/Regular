@@ -25,10 +25,29 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Label"
+                android:background="@color/black"
+                android:padding="2dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                ></TextView>
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_dropdown"
+                android:theme="@style/TimePickerTheme"
+                android:spinnerMode="dropdown"
+                android:entries="@array/planets_array"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Heading"
                 android:background="@color/black"
                 android:padding="2dp"
-                android:textColor="@color/cherry_tomato"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:gravity="center"
                 android:textStyle="bold"
@@ -42,10 +61,10 @@
                 android:gravity="start"
                 android:background="@color/black"
                 android:textColor="@color/white"
-                android:textColorHint="@color/grey"
+                android:textColorHint="@color/lightBlack"
                 android:padding="2dp"
                 android:textSize="24sp"
-                android:hint="Write a heading of your event...">
+                android:hint="Untitled Heading">
             </EditText>
             <TextView
                 android:layout_width="match_parent"
@@ -53,7 +72,7 @@
                 android:text="Event Date"
                 android:background="@color/black"
                 android:padding="2dp"
-                android:textColor="@color/cherry_tomato"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:gravity="center"
                 android:textStyle="bold">
@@ -65,16 +84,33 @@
                 android:calendarTextColor="@color/black"
                 android:theme="@style/TimePickerTheme">
             </DatePicker>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:shadowColor="@color/cherry_tomato"
+                android:id="@+id/switch_en"
+                android:text="No Time Limit"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:textSize="18sp"
+                ></Switch>
+            </RelativeLayout>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Start Time"
                 android:background="@color/black"
                 android:padding="2dp"
-                android:textColor="@color/cherry_tomato"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:gravity="center"
-                android:textStyle="bold">
+                android:textStyle="bold"
+                android:id="@+id/start_timeTV">
             </TextView>
             <TimePicker
                 android:layout_width="wrap_content"
@@ -82,7 +118,8 @@
                 android:id="@+id/start_time"
                 android:calendarTextColor="@color/black"
                 android:theme="@style/TimePickerTheme"
-                android:background="@color/black">
+                android:background="@color/black"
+                android:timePickerMode="spinner">
             </TimePicker>
             <TextView
                 android:layout_width="match_parent"
@@ -90,10 +127,11 @@
                 android:text="End Time"
                 android:background="@color/black"
                 android:padding="2dp"
-                android:textColor="@color/cherry_tomato"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:gravity="center"
-                android:textStyle="bold">
+                android:textStyle="bold"
+                android:id="@+id/end_timeTV">
             </TextView>
             <TimePicker
                 android:layout_width="match_parent"
@@ -101,7 +139,8 @@
                 android:id="@+id/end_time"
                 android:calendarTextColor="@color/black"
                 android:theme="@style/TimePickerTheme"
-                android:background="@color/black">
+                android:background="@color/black"
+                android:timePickerMode="spinner">
             </TimePicker>
 
         </LinearLayout>

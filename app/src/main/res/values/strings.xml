@@ -2,6 +2,26 @@
     <string name="app_name">Regular</string>
     <string name="close">Close</string>
     <string name="open">Open</string>
+    <string-array name="planets_array">
+        <item>Meet/Schedule</item>
+        <item>Call</item>
+        <item>Email</item>
+        <item>Pay</item>
+        <item>Deadline</item>
+        <item>Study</item>
+        <item>Exercise</item>
+        <item>Get</item>
+        <item>Take</item>
+        <item>Check</item>
+        <item>Do</item>
+        <item>Pick</item>
+        <item>Finish</item>
+        <item>Buy</item>
+        <item>Clean</item>
+        <item>Print</item>
+        <item>Read</item>
+        <item>Other</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

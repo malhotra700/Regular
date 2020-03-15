@@ -9,6 +9,7 @@
     <color name="colorBackground3">#9c1c17</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#2D2926</color>
+    <color name="lightBlack">#423e3b</color>
     <color name="cherry_tomato">#E94B3C</color>
     <color name="grey">#a6a6a6</color>
 </resources>

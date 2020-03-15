@@ -8,28 +8,42 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -59,19 +73,27 @@ public class CalendarFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     HorizontalCalendar horizontalCalendar;
+    Spinner spinner;
     Dialog mdialog;
     FloatingActionButton floatingActionButton;
     EditText eventHeading;
     DatePicker eventDatePicker;
     TimePicker startTimePicker,endTimePicker;
     Events events;
+    Switch aSwitch;
+    TextView startTimeTV,endTimeTV;
 
     FirebaseDatabase database;
-    DatabaseReference ref;
+    DatabaseReference ref,readRef;
     GoogleSignInAccount acct;
+    RecyclerView recyclerView;
+    ArrayList<Events> list;
+    String selectedDate;
+    int Checker;
 
     private Context mContext;
     private AppCompatActivity mActivity;
+    private static final String[] labels = {"item 1", "item 2", "item 3"};
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -110,24 +132,117 @@ public class CalendarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_calendar, container, false);
 
+        Calendar current=Calendar.getInstance();
+
+        int dayi=current.get(Calendar.DAY_OF_MONTH);
+        String dayii = "00";
+        if(dayi<10){
+            dayii="0"+Integer.toString(dayi);
+        }
+        else{
+            dayii=Integer.toString(dayi);
+        }
+        int monthi=current.get(Calendar.MONTH)+1;
+        String monthii = "00";
+        if(monthi<10){
+            monthii="0"+Integer.toString(monthi);
+        }
+        else{
+            monthii=Integer.toString(monthi);
+        }
+        selectedDate=dayii+"-"+monthii+"-"+Integer.toString(current.get(Calendar.YEAR));
+
+
         acct = GoogleSignIn.getLastSignedInAccount(getActivity());
         database=FirebaseDatabase.getInstance();
         ref=database.getReference("Events");
         events=new Events();
 
+        recyclerView=(RecyclerView)view.findViewById(R.id.recycler_events);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        list=new ArrayList<Events>();
+        recyclerView.setAdapter(new ProgrammingAdapter(getContext(),list));
+        readRef= database.getReference().child("Events").child(acct.getId()).child(selectedDate);
+        Log.i("jjjjbbbb",readRef.toString());
+        readRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                    Events p=dataSnapshot1.getValue(Events.class);
+                    list.add(p);
+                    Log.i("jjjjbbbb",list.toString());
+                }
+                recyclerView.setAdapter(new ProgrammingAdapter(getContext(),list));
+                refreshRecycler(recyclerView);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getContext(),"Something Went Wrong!",Toast.LENGTH_LONG).show();
+                refreshRecycler(recyclerView);
+            }
+        });
+
+
         floatingActionButton=view.findViewById(R.id.fab_add);
         floatingActionButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View view){
+
+                spinner = (Spinner)mdialog.findViewById(R.id.spinner1);
+
+                //spinner.setOnItemSelectedListener(mActivity);
+
+
+
+                eventHeading=mdialog.findViewById(R.id.event_heading);
+                eventDatePicker=mdialog.findViewById(R.id.event_date);
+                Date today = new Date();
+                Calendar c = Calendar.getInstance();
+                c.setTime(today);
+                long minDate = c.getTime().getTime();
+                eventDatePicker.setMinDate(minDate);
+                c.add( Calendar.MONTH, 12 );
+                minDate = c.getTime().getTime();
+                eventDatePicker.setMaxDate(minDate);
+                startTimePicker=mdialog.findViewById(R.id.start_time);
+                endTimePicker=mdialog.findViewById(R.id.end_time);
+                startTimeTV=mdialog.findViewById(R.id.start_timeTV);
+                endTimeTV=mdialog.findViewById(R.id.end_timeTV);
+                aSwitch=mdialog.findViewById(R.id.switch_en);
+                aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        //Log.i("gggg","gone");
+                        if(isChecked){
+                            startTimePicker.setVisibility(View.GONE);
+                            endTimePicker.setVisibility(View.GONE);
+                            startTimeTV.setVisibility(View.GONE);
+                            endTimeTV.setVisibility(View.GONE);
+                            Checker=1;
+                            //Log.i("gggg","gone");
+                        }
+                        else{
+                            startTimePicker.setVisibility(View.VISIBLE);
+                            endTimePicker.setVisibility(View.VISIBLE);
+                            startTimeTV.setVisibility(View.VISIBLE);
+                            endTimeTV.setVisibility(View.VISIBLE);
+                            Checker=0;
+                        }
+                    }
+                });
+
                 Button addEventButton = mdialog.findViewById(R.id.add_event_btn);
                 addEventButton.setOnClickListener(new View.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onClick(View v) {
-                        eventHeading=mdialog.findViewById(R.id.event_heading);
-                        eventDatePicker=mdialog.findViewById(R.id.event_date);
-                        startTimePicker=mdialog.findViewById(R.id.start_time);
-                        endTimePicker=mdialog.findViewById(R.id.end_time);
+                        events.setLabel(spinner.getSelectedItem().toString());
+                        String eventHeadingCheck=eventHeading.getText().toString();
+                        if(eventHeadingCheck.isEmpty()) {
+                            eventHeadingCheck = "Untitled";
+                        }
+                        events.setHeading(eventHeadingCheck);
                         String formattedTime = "";
                         int hour = startTimePicker.getHour();
                         String sHour = "00";
@@ -146,7 +261,10 @@ public class CalendarFragment extends Fragment {
                         }
 
                         formattedTime = sHour+":"+sMinute;
-                        events.setStartEventTime(formattedTime);
+                        if(Checker==0)
+                            events.setStartEventTime(formattedTime);
+                        else
+                            events.setStartEventTime("");
 
                         hour = endTimePicker.getHour();
                         sHour = "00";
@@ -164,8 +282,15 @@ public class CalendarFragment extends Fragment {
                             sMinute = String.valueOf(minute);
                         }
 
-                        formattedTime = sHour+":"+sMinute;
-                        events.setEndEventTime(formattedTime);
+                        String formattedTimee = sHour+":"+sMinute;
+                        if(Checker==0){
+                            if(formattedTime.compareTo(formattedTimee)>0){
+                                //Log.i("gggg","gone");
+                                formattedTimee=formattedTime;
+                            }
+                            events.setEndEventTime(formattedTimee);}
+                        else
+                            events.setEndEventTime("");
 
                         String day = "00";
                         int d=eventDatePicker.getDayOfMonth();
@@ -188,9 +313,10 @@ public class CalendarFragment extends Fragment {
                         String year = Integer.toString(eventDatePicker.getYear());
                         formattedTime=day+"-"+month+"-"+year;
 
-                        ref.child(acct.getId()).child(formattedTime).child(eventHeading.getText().toString()).setValue(events);
+                        ref.child(acct.getId()).child(formattedTime).child(acct.getId()+Calendar.getInstance().getTime()).setValue(events);
                         Toast.makeText(mContext,"Event Added",Toast.LENGTH_LONG).show();
                         mdialog.dismiss();
+                        mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.l_layout,new EventsFragment()).commit();
 
 
                     }
@@ -214,25 +340,65 @@ public class CalendarFragment extends Fragment {
         horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.calendarView)
                 .range(startDate, endDate)
                 .datesNumberOnScreen(5)
-                .addEvents(new CalendarEventsPredicate() {
-                    @Override
-                    public List<CalendarEvent> events(Calendar date) {
-                        List<CalendarEvent> events = new ArrayList<>();
-                        events.add(new CalendarEvent(Color.rgb(10, 100, 50), "event X"));
-                        return events;
-                    }
-                })
+                .defaultSelectedDate(Calendar.getInstance())
                 .build();
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
-                Log.i("Info",date.toString());
-                Toast.makeText(getContext(),Integer.toString(date.get(Calendar.DAY_OF_MONTH))
-                        +" "+Integer.toString(date.get(Calendar.MONTH)+1)+" "+
-                        Integer.toString(date.get(Calendar.YEAR)),Toast.LENGTH_LONG).show();
+                int days=date.get(Calendar.DAY_OF_MONTH);
+                String dayss = "00";
+                if(days<10){
+                    dayss="0"+Integer.toString(days);
+                }
+                else{
+                    dayss=Integer.toString(days);
+                }
+                int months=date.get(Calendar.MONTH)+1;
+                String monthss = "00";
+                if(months<10){
+                    monthss="0"+Integer.toString(months);
+                }
+                else{
+                    monthss=Integer.toString(months);
+                }
+                selectedDate=dayss+"-"+monthss+"-"+Integer.toString(date.get(Calendar.YEAR));
+                Toast.makeText(getContext(),selectedDate,Toast.LENGTH_LONG).show();
+                list=new ArrayList<Events>();
+                readRef= database.getReference().child("Events").child(acct.getId()).child(selectedDate);
+                //Log.i("jjjjbbbb",readRef.toString());
+                readRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                            Events p=dataSnapshot1.getValue(Events.class);
+                            list.add(p);
+                           // Log.i("jjjjbbbb",list.toString());
+                        }
+                        //Log.i("jjjjbbbb","reached");
+                        recyclerView.setAdapter(new ProgrammingAdapter(getContext(),list));
+                        //Log.i("jjjjbbbb","reached2");
+                        refreshRecycler(recyclerView);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getContext(),"Something Went Wrong!",Toast.LENGTH_LONG).show();
+                        refreshRecycler(recyclerView);
+                    }
+                });
             }
         });
         return view;
+    }
+
+    private void refreshRecycler(final RecyclerView recyclerView) {
+        final Context context = recyclerView.getContext();
+        final LayoutAnimationController controller =
+                AnimationUtils.loadLayoutAnimation(context, R.anim.layout_anim_fall_down);
+
+        recyclerView.setLayoutAnimation(controller);
+        recyclerView.getAdapter().notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

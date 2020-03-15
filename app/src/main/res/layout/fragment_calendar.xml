@@ -7,7 +7,7 @@
     tools:context=".CalendarFragment">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
     <!-- TODO: Update blank fragment layout -->
     <devs.mulham.horizontalcalendar.HorizontalCalendarView
@@ -21,7 +21,7 @@
         />
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/recycler_events"
         >
     </androidx.recyclerview.widget.RecyclerView>
