@@ -3,6 +3,7 @@ package com.example.regular;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -161,7 +162,7 @@ public class CalendarFragment extends Fragment {
         recyclerView=(RecyclerView)view.findViewById(R.id.recycler_events);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         list=new ArrayList<Events>();
-        recyclerView.setAdapter(new ProgrammingAdapter(getContext(),list));
+        recyclerView.setAdapter(new ProgrammingAdapter(getContext(),list,selectedDate,mActivity));
         readRef= database.getReference().child("Events").child(acct.getId()).child(selectedDate);
         Log.i("jjjjbbbb",readRef.toString());
         readRef.addValueEventListener(new ValueEventListener() {
@@ -172,7 +173,7 @@ public class CalendarFragment extends Fragment {
                     list.add(p);
                     Log.i("jjjjbbbb",list.toString());
                 }
-                recyclerView.setAdapter(new ProgrammingAdapter(getContext(),list));
+                recyclerView.setAdapter(new ProgrammingAdapter(getContext(),list,selectedDate,mActivity));
                 refreshRecycler(recyclerView);
             }
 
@@ -274,12 +275,12 @@ public class CalendarFragment extends Fragment {
                             sHour = String.valueOf(hour);
                         }
 
-                        minute = startTimePicker.getCurrentMinute();
+                        int minut = endTimePicker.getCurrentMinute();
                         sMinute = "00";
-                        if(minute < 10){
-                            sMinute = "0"+minute;
+                        if(minut < 10){
+                            sMinute = "0"+minut;
                         } else {
-                            sMinute = String.valueOf(minute);
+                            sMinute = String.valueOf(minut);
                         }
 
                         String formattedTimee = sHour+":"+sMinute;
@@ -311,9 +312,9 @@ public class CalendarFragment extends Fragment {
                         }
 
                         String year = Integer.toString(eventDatePicker.getYear());
-                        formattedTime=day+"-"+month+"-"+year;
+                        String formattedDate=day+"-"+month+"-"+year;
 
-                        ref.child(acct.getId()).child(formattedTime).child(acct.getId()+Calendar.getInstance().getTime()).setValue(events);
+                        ref.child(acct.getId()).child(formattedDate).child(acct.getId()+formattedTime+formattedTimee).setValue(events);
                         Toast.makeText(mContext,"Event Added",Toast.LENGTH_LONG).show();
                         mdialog.dismiss();
                         mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.l_layout,new EventsFragment()).commit();
@@ -362,7 +363,7 @@ public class CalendarFragment extends Fragment {
                     monthss=Integer.toString(months);
                 }
                 selectedDate=dayss+"-"+monthss+"-"+Integer.toString(date.get(Calendar.YEAR));
-                Toast.makeText(getContext(),selectedDate,Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),selectedDate,Toast.LENGTH_SHORT).show();
                 list=new ArrayList<Events>();
                 readRef= database.getReference().child("Events").child(acct.getId()).child(selectedDate);
                 //Log.i("jjjjbbbb",readRef.toString());
@@ -375,7 +376,7 @@ public class CalendarFragment extends Fragment {
                            // Log.i("jjjjbbbb",list.toString());
                         }
                         //Log.i("jjjjbbbb","reached");
-                        recyclerView.setAdapter(new ProgrammingAdapter(getContext(),list));
+                        recyclerView.setAdapter(new ProgrammingAdapter(getContext(),list,selectedDate,mActivity));
                         //Log.i("jjjjbbbb","reached2");
                         refreshRecycler(recyclerView);
                     }

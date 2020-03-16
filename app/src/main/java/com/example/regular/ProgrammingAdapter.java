@@ -1,6 +1,10 @@
 package com.example.regular;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,21 +12,39 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
+
+import static com.example.regular.HomeActivity.*;
 
 public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.ProgrammingViewHolder> {
     Context context;
     ArrayList<Events> eventsAda;
+    DatabaseReference ref;
+    FirebaseDatabase database;
+    GoogleSignInAccount acct;
+    SharedPreferences prefs;
+    String selected;
+    AppCompatActivity mActivity;
 
-    public  ProgrammingAdapter(Context c,ArrayList<Events> e){
+    public  ProgrammingAdapter(Context c,ArrayList<Events> e,String selected,AppCompatActivity mActivity){
         this.context=c;
         this.eventsAda=e;
+        this.selected=selected;
+        this.mActivity=mActivity;
     }
     @NonNull
     @Override
@@ -31,7 +53,7 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProgrammingAdapter.ProgrammingViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProgrammingAdapter.ProgrammingViewHolder holder, final int position) {
         String checkLabel=eventsAda.get(position).getLabel();
         if(checkLabel.equals("Meet/Schedule")){
             holder.imageView.setImageResource(R.drawable.ic_meet);
@@ -75,6 +97,30 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
         holder.headingTV.setText(eventsAda.get(position).getHeading());
         holder.startTV.setText(eventsAda.get(position).getStartEventTime());
         holder.endTV.setText(eventsAda.get(position).getEndEventTime());
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.i("position",eventsAda.get(position).getHeading());
+                new AlertDialog.Builder(context)
+                        .setTitle("Title")
+                        .setMessage("Do you really want to delete this event?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                database=FirebaseDatabase.getInstance();
+                                ref=database.getReference("Events");
+                                acct = GoogleSignIn.getLastSignedInAccount(context);
+
+                                Log.i("position",selected);
+                                ref.child(acct.getId()).child(selected).child(acct.getId()+eventsAda.get(position).getStartEventTime()+eventsAda.get(position).getEndEventTime()).removeValue();
+                                mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.l_layout,new EventsFragment()).commit();
+                                Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show();
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
+                return true;
+            }
+        });
         //setAnimation(holder.itemView, position);
     }
     private void setAnimation(View viewToAnimate, int position)
@@ -100,9 +146,11 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
     public class ProgrammingViewHolder extends RecyclerView.ViewHolder{
         TextView headingTV,startTV,endTV,labelTV;
         ImageView imageView;
+        LinearLayout linearLayout;
 
         public ProgrammingViewHolder(@NonNull View itemView) {
             super(itemView);
+            linearLayout=(LinearLayout)itemView.findViewById(R.id.item_linear);
             imageView=(ImageView)itemView.findViewById(R.id.item_icon);
             labelTV=(TextView) itemView.findViewById(R.id.item_label);
             headingTV=(TextView) itemView.findViewById(R.id.item_heading);

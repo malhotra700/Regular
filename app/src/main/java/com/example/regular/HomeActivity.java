@@ -12,10 +12,21 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class HomeActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
@@ -23,6 +34,9 @@ public class HomeActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
+    DatabaseReference ref;
+    FirebaseDatabase database;
+    GoogleSignInAccount acct;
 
     @Override
     protected void onStart() {
@@ -33,10 +47,21 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
         mDrawerLayout=(DrawerLayout)findViewById(R.id.drawer);
         NavigationView navigationView=(NavigationView)findViewById(R.id.navigationView);
         mToggle=new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
+
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        String val=dateFormat.format(cal.getTime());
+        database= FirebaseDatabase.getInstance();
+        ref=database.getReference("Events");
+        acct = GoogleSignIn.getLastSignedInAccount(this);
+        ref.child(acct.getId()).child(val).removeValue();
 
 
         mAuth=FirebaseAuth.getInstance();

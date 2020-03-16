@@ -11,7 +11,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:id="@+id/pop_blog_card_view"
+        android:id="@+id/pop_event_card_view"
         android:layout_above="@+id/add_event_btn">
         <ScrollView
             android:layout_width="match_parent"
