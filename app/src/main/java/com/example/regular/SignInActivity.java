@@ -45,6 +45,8 @@ public class SignInActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sign_in);
+
+
         signInButton = (SignInButton)findViewById(R.id.sign_in_button);
         firebaseAuth=FirebaseAuth.getInstance();
         signInButton.setSize(SignInButton.SIZE_STANDARD);

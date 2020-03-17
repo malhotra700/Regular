@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -37,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
     DatabaseReference ref;
     FirebaseDatabase database;
     GoogleSignInAccount acct;
+    TextView headeruserTV;
 
     @Override
     protected void onStart() {
@@ -61,7 +63,15 @@ public class HomeActivity extends AppCompatActivity {
         database= FirebaseDatabase.getInstance();
         ref=database.getReference("Events");
         acct = GoogleSignIn.getLastSignedInAccount(this);
-        ref.child(acct.getId()).child(val).removeValue();
+
+        headeruserTV=findViewById(R.id.header_user);
+        if (acct != null) {
+            String personName = acct.getDisplayName();
+            //headeruserTV.setText(personName);
+        }
+
+
+            ref.child(acct.getId()).child(val).removeValue();
 
 
         mAuth=FirebaseAuth.getInstance();

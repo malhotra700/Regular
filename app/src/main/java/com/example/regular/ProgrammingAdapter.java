@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +57,8 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProgrammingAdapter.ProgrammingViewHolder holder, final int position) {
         String checkLabel=eventsAda.get(position).getLabel();
+
+        prefs = context.getSharedPreferences("MyPref", MODE_PRIVATE);
         if(checkLabel.equals("Meet/Schedule")){
             holder.imageView.setImageResource(R.drawable.ic_meet);
             checkLabel="Meeting";
@@ -123,18 +127,26 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
                 return true;
             }
         });
+        if(selected.equals(prefs.getString("day2",""))) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
+                    i.putExtra(AlarmClock.EXTRA_MESSAGE,eventsAda.get(position).getLabel()+" "+ eventsAda.get(position).getHeading());
+                    String[] temp=eventsAda.get(position).getStartEventTime().split(":");
+                    if(!temp[0].isEmpty()) {
+                        int h = Integer.parseInt(temp[0]);
+                        int m = Integer.parseInt(temp[1]);
+                        i.putExtra(AlarmClock.EXTRA_HOUR, h);
+                        i.putExtra(AlarmClock.EXTRA_MINUTES, m);
+                        context.startActivity(i);
+                    }
+                }
+            });
+        }
         //setAnimation(holder.itemView, position);
     }
-    private void setAnimation(View viewToAnimate, int position)
-    {
-        // If the bound view wasn't previously displayed on screen, it's animated
-        if (true)
-        {
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
-            viewToAnimate.startAnimation(animation);
 
-        }
-    }
 
     @Override
     public int getItemCount() {
