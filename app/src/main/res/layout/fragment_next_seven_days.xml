@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".NextSevenDaysFragment"
+    android:background="@color/black">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/seven_day1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="Day"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Day"
+        android:gravity="center"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:id="@+id/seven_day2"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Day"
+        android:gravity="center"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:id="@+id/seven_day3"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Day"
+        android:gravity="center"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:id="@+id/seven_day4"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Day"
+        android:gravity="center"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:id="@+id/seven_day5"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Day"
+        android:gravity="center"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:id="@+id/seven_day6"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Day"
+        android:gravity="center"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:id="@+id/seven_day7"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Check how busy you are"
+        android:id="@+id/check_busy_btn"></Button>
+
+</LinearLayout>

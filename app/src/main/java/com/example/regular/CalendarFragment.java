@@ -53,6 +53,8 @@ import devs.mulham.horizontalcalendar.model.CalendarEvent;
 import devs.mulham.horizontalcalendar.utils.CalendarEventsPredicate;
 import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,6 +91,7 @@ public class CalendarFragment extends Fragment {
     GoogleSignInAccount acct;
     RecyclerView recyclerView;
     ArrayList<Events> list;
+    SharedPreferences preferences;
     String selectedDate;
     int Checker;
 
@@ -133,6 +136,10 @@ public class CalendarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_calendar, container, false);
 
+        preferences = mActivity.getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = preferences.edit();
+        //Log.i("Dateeecf",preferences.getString("day1",""));
+
         Calendar current=Calendar.getInstance();
 
         int dayi=current.get(Calendar.DAY_OF_MONTH);
@@ -168,11 +175,21 @@ public class CalendarFragment extends Fragment {
         readRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                float factor=0;
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                     Events p=dataSnapshot1.getValue(Events.class);
                     list.add(p);
-                    Log.i("jjjjbbbb",list.toString());
+                    if(selectedDate.equals(preferences.getString("day1",""))){
+                        String[] e=p.getEndEventTime().split(":");
+                        String[] s=p.getStartEventTime().split(":");
+                        int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
+                        //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                        factor+=temp*1.0/60;
+                    }
                 }
+                Log.i("Dateeecf",factor+"");
+                editor.putFloat("factor1",factor);
+                editor.apply();
                 recyclerView.setAdapter(new ProgrammingAdapter(getContext(),list,selectedDate,mActivity));
                 refreshRecycler(recyclerView);
             }
@@ -370,12 +387,71 @@ public class CalendarFragment extends Fragment {
                 readRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        float factor=0;
+                        String f="";
                         for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                             Events p=dataSnapshot1.getValue(Events.class);
                             list.add(p);
-                           // Log.i("jjjjbbbb",list.toString());
+                            if(selectedDate.equals(preferences.getString("day1",""))){
+                                String[] e=p.getEndEventTime().split(":");
+                                String[] s=p.getStartEventTime().split(":");
+                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
+                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                factor+=temp*1.0/60;
+                                f="1";
+                            }
+                            else if(selectedDate.equals(preferences.getString("day2",""))){
+                                String[] e=p.getEndEventTime().split(":");
+                                String[] s=p.getStartEventTime().split(":");
+                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
+                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                factor+=temp*1.0/60;
+                                f="2";
+                            }
+                            else if(selectedDate.equals(preferences.getString("day3",""))){
+                                String[] e=p.getEndEventTime().split(":");
+                                String[] s=p.getStartEventTime().split(":");
+                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
+                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                factor+=temp*1.0/60;
+                                f="3";
+                            }
+                            else if(selectedDate.equals(preferences.getString("day4",""))){
+                                String[] e=p.getEndEventTime().split(":");
+                                String[] s=p.getStartEventTime().split(":");
+                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
+                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                factor+=temp*1.0/60;
+                                f="4";
+                            }
+                            else if(selectedDate.equals(preferences.getString("day5",""))){
+                                String[] e=p.getEndEventTime().split(":");
+                                String[] s=p.getStartEventTime().split(":");
+                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
+                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                factor+=temp*1.0/60;
+                                f="5";
+                            }
+                            else if(selectedDate.equals(preferences.getString("day6",""))){
+                                String[] e=p.getEndEventTime().split(":");
+                                String[] s=p.getStartEventTime().split(":");
+                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
+                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                factor+=temp*1.0/60;
+                                f="6";
+                            }
+                            else if(selectedDate.equals(preferences.getString("day7",""))){
+                                String[] e=p.getEndEventTime().split(":");
+                                String[] s=p.getStartEventTime().split(":");
+                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
+                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                factor+=temp*1.0/60;
+                                f="7";
+                            }
                         }
-                        //Log.i("jjjjbbbb","reached");
+                        Log.i("Dateeecf",factor+"");
+                        editor.putFloat("factor"+f,factor);
+                        editor.apply();
                         recyclerView.setAdapter(new ProgrammingAdapter(getContext(),list,selectedDate,mActivity));
                         //Log.i("jjjjbbbb","reached2");
                         refreshRecycler(recyclerView);
