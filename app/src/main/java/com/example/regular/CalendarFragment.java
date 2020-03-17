@@ -180,10 +180,13 @@ public class CalendarFragment extends Fragment {
                     Events p=dataSnapshot1.getValue(Events.class);
                     list.add(p);
                     if(selectedDate.equals(preferences.getString("day1",""))){
-                        String[] e=p.getEndEventTime().split(":");
-                        String[] s=p.getStartEventTime().split(":");
-                        int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
-                        //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                        int temp=1;
+                        if (!p.getEndEventTime().isEmpty()) {
+                            String[] e = p.getEndEventTime().split(":");
+                            String[] s = p.getStartEventTime().split(":");
+                            temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                            //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                        }
                         factor+=temp*1.0/60;
                     }
                 }
@@ -433,58 +436,79 @@ public class CalendarFragment extends Fragment {
                             Events p=dataSnapshot1.getValue(Events.class);
                             list.add(p);
                             if(selectedDate.equals(preferences.getString("day1",""))){
-                                String[] e=p.getEndEventTime().split(":");
-                                String[] s=p.getStartEventTime().split(":");
-                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
-                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                int temp=1;
+                                if (!p.getEndEventTime().isEmpty()) {
+                                    String[] e = p.getEndEventTime().split(":");
+                                    String[] s = p.getStartEventTime().split(":");
+                                    temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                                    //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                }
                                 factor+=temp*1.0/60;
                                 f="1";
                             }
                             if(selectedDate.equals(preferences.getString("day2",""))){
-                                String[] e=p.getEndEventTime().split(":");
-                                String[] s=p.getStartEventTime().split(":");
-                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
-                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                int temp=1;
+                                if (!p.getEndEventTime().isEmpty()) {
+                                    String[] e = p.getEndEventTime().split(":");
+                                    String[] s = p.getStartEventTime().split(":");
+                                    temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                                    //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                }
                                 factor+=temp*1.0/60;
                                 f="2";
                             }
                             if(selectedDate.equals(preferences.getString("day3",""))){
-                                String[] e=p.getEndEventTime().split(":");
-                                String[] s=p.getStartEventTime().split(":");
-                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
-                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                int temp=1;
+                                if (!p.getEndEventTime().isEmpty()) {
+                                    String[] e = p.getEndEventTime().split(":");
+                                    String[] s = p.getStartEventTime().split(":");
+                                    temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                                    //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                }
                                 factor+=temp*1.0/60;
                                 f="3";
                             }
                             if(selectedDate.equals(preferences.getString("day4",""))){
-                                String[] e=p.getEndEventTime().split(":");
-                                String[] s=p.getStartEventTime().split(":");
-                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
-                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                int temp=1;
+                                if (!p.getEndEventTime().isEmpty()) {
+                                    String[] e = p.getEndEventTime().split(":");
+                                    String[] s = p.getStartEventTime().split(":");
+                                    temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                                    //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                }
                                 factor+=temp*1.0/60;
                                 f="4";
                             }
                             if(selectedDate.equals(preferences.getString("day5",""))){
-                                String[] e=p.getEndEventTime().split(":");
-                                String[] s=p.getStartEventTime().split(":");
-                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
-                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                int temp=1;
+                                if (!p.getEndEventTime().isEmpty()) {
+                                    String[] e = p.getEndEventTime().split(":");
+                                    String[] s = p.getStartEventTime().split(":");
+                                    temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                                    //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                }
                                 factor+=temp*1.0/60;
                                 f="5";
                             }
                             if(selectedDate.equals(preferences.getString("day6",""))){
-                                String[] e=p.getEndEventTime().split(":");
-                                String[] s=p.getStartEventTime().split(":");
-                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
-                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                int temp=1;
+                                if (!p.getEndEventTime().isEmpty()) {
+                                    String[] e = p.getEndEventTime().split(":");
+                                    String[] s = p.getStartEventTime().split(":");
+                                    temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                                    //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                }
                                 factor+=temp*1.0/60;
                                 f="6";
                             }
                             if(selectedDate.equals(preferences.getString("day7",""))){
-                                String[] e=p.getEndEventTime().split(":");
-                                String[] s=p.getStartEventTime().split(":");
-                                int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
-                                //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                int temp=1;
+                                if (!p.getEndEventTime().isEmpty()) {
+                                    String[] e = p.getEndEventTime().split(":");
+                                    String[] s = p.getStartEventTime().split(":");
+                                    temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                                    //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
+                                }
                                 factor+=temp*1.0/60;
                                 f="7";
                             }
