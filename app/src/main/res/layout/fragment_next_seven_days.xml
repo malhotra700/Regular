@@ -9,6 +9,55 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Working Hours :"
+        android:textColor="@color/white"
+        android:padding="8dp"
+        android:layout_margin="8dp"
+        android:textSize="14sp"
+        android:id="@+id/working_tv"
+        android:visibility="gone"></TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/working_hrs"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="equal to 0h"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:background="@drawable/shape_rounded_rectangle"
+            android:backgroundTint="@color/cherry_tomato"
+            android:padding="8dp"
+            android:layout_margin="4dp"></TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="less than 3.5h"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:background="@drawable/shape_rounded_rectangle"
+            android:backgroundTint="@color/dark_cherry1"
+            android:padding="8dp"
+            android:layout_margin="4dp"></TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="greater than 3.5h"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:background="@drawable/shape_rounded_rectangle"
+            android:backgroundTint="@color/dark_cherry2"
+            android:padding="8dp"
+            android:layout_margin="4dp"></TextView>
+
+    </LinearLayout>
+    <TextView
         android:id="@+id/seven_day1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,6 +131,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Check how busy you are"
-        android:id="@+id/check_busy_btn"></Button>
+        android:id="@+id/check_busy_btn"
+        android:textColor="@color/white"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/shape_rounded_rectangle"></Button>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:text="Busy"
+        android:gravity="center"
+        android:id="@+id/busy_tv"
+        android:visibility="gone"
+        android:padding="8dp"
+        android:background="@drawable/shape_rectangle_border"
+        ></TextView>
 
 </LinearLayout>

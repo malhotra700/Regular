@@ -37,10 +37,13 @@
                 android:id="@+id/spinner1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:drawable/btn_dropdown"
-                android:theme="@style/TimePickerTheme"
+                android:theme="@style/SpinnerTheme"
                 android:spinnerMode="dropdown"
                 android:entries="@array/planets_array"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightBlack"></View>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,6 +69,32 @@
                 android:textSize="24sp"
                 android:hint="Untitled Heading">
             </EditText>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightBlack"></View>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="@color/cherry_tomato"
+                    android:id="@+id/switch_star"
+                    android:text="Priority"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"
+                    android:theme="@style/SCBSwitch"
+                    android:textSize="18sp"
+                    ></Switch>
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightBlack"></View>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -84,9 +113,14 @@
                 android:calendarTextColor="@color/black"
                 android:theme="@style/TimePickerTheme">
             </DatePicker>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightBlack"></View>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
             <Switch
                 android:layout_width="wrap_content"
@@ -97,6 +131,7 @@
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:layout_centerHorizontal="true"
+                android:theme="@style/SCBSwitch"
                 android:textSize="18sp"
                 ></Switch>
             </RelativeLayout>
@@ -121,6 +156,10 @@
                 android:background="@color/black"
                 android:timePickerMode="spinner">
             </TimePicker>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightBlack"></View>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

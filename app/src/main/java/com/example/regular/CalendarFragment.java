@@ -83,7 +83,7 @@ public class CalendarFragment extends Fragment {
     DatePicker eventDatePicker;
     TimePicker startTimePicker,endTimePicker;
     Events events;
-    Switch aSwitch;
+    Switch aSwitch,starSwitch;
     TextView startTimeTV,endTimeTV;
 
     FirebaseDatabase database;
@@ -94,7 +94,7 @@ public class CalendarFragment extends Fragment {
     SharedPreferences preferences;
     String selectedDate;
     int Checker;
-
+    SharedPreferences.Editor editor;
     private Context mContext;
     private AppCompatActivity mActivity;
     private static final String[] labels = {"item 1", "item 2", "item 3"};
@@ -137,7 +137,7 @@ public class CalendarFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_calendar, container, false);
 
         preferences = mActivity.getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        final SharedPreferences.Editor editor = preferences.edit();
+        editor = preferences.edit();
         //Log.i("Dateeecf",preferences.getString("day1",""));
 
         Calendar current=Calendar.getInstance();
@@ -247,6 +247,17 @@ public class CalendarFragment extends Fragment {
                             endTimeTV.setVisibility(View.VISIBLE);
                             Checker=0;
                         }
+                    }
+                });
+                starSwitch=mdialog.findViewById(R.id.switch_star);
+                events.setStar(false);
+                starSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(isChecked)
+                            events.setStar(true);
+                        else
+                            events.setStar(false);
                     }
                 });
 
@@ -380,6 +391,35 @@ public class CalendarFragment extends Fragment {
                     monthss=Integer.toString(months);
                 }
                 selectedDate=dayss+"-"+monthss+"-"+Integer.toString(date.get(Calendar.YEAR));
+
+                String t=preferences.getString("DaysCounter","");
+                //Log.i("Counterss2",t);
+                if(selectedDate.equals(preferences.getString("day2",""))) {
+                    if (!t.contains("2"))
+                        editor.putString("DaysCounter", t + "2");
+                }
+                if(selectedDate.equals(preferences.getString("day3",""))){
+                    Log.i("Counterss3",t);
+                    if(!t.contains("3"))
+                        editor.putString("DaysCounter",t+"3");
+                }
+                if(selectedDate.equals(preferences.getString("day4",""))) {
+                    if (!t.contains("4"))
+                        editor.putString("DaysCounter", t + "4");
+                }
+                if(selectedDate.equals(preferences.getString("day5",""))) {
+                    if (!t.contains("5"))
+                        editor.putString("DaysCounter", t + "5");
+                }
+                if(selectedDate.equals(preferences.getString("day6",""))) {
+                    if (!t.contains("6"))
+                        editor.putString("DaysCounter", t + "6");
+                }
+                if(selectedDate.equals(preferences.getString("day7",""))) {
+                    if (!t.contains("7"))
+                        editor.putString("DaysCounter", t + "7");
+                }
+
                 Toast.makeText(getContext(),selectedDate,Toast.LENGTH_SHORT).show();
                 list=new ArrayList<Events>();
                 readRef= database.getReference().child("Events").child(acct.getId()).child(selectedDate);
@@ -400,7 +440,7 @@ public class CalendarFragment extends Fragment {
                                 factor+=temp*1.0/60;
                                 f="1";
                             }
-                            else if(selectedDate.equals(preferences.getString("day2",""))){
+                            if(selectedDate.equals(preferences.getString("day2",""))){
                                 String[] e=p.getEndEventTime().split(":");
                                 String[] s=p.getStartEventTime().split(":");
                                 int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
@@ -408,7 +448,7 @@ public class CalendarFragment extends Fragment {
                                 factor+=temp*1.0/60;
                                 f="2";
                             }
-                            else if(selectedDate.equals(preferences.getString("day3",""))){
+                            if(selectedDate.equals(preferences.getString("day3",""))){
                                 String[] e=p.getEndEventTime().split(":");
                                 String[] s=p.getStartEventTime().split(":");
                                 int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
@@ -416,7 +456,7 @@ public class CalendarFragment extends Fragment {
                                 factor+=temp*1.0/60;
                                 f="3";
                             }
-                            else if(selectedDate.equals(preferences.getString("day4",""))){
+                            if(selectedDate.equals(preferences.getString("day4",""))){
                                 String[] e=p.getEndEventTime().split(":");
                                 String[] s=p.getStartEventTime().split(":");
                                 int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
@@ -424,7 +464,7 @@ public class CalendarFragment extends Fragment {
                                 factor+=temp*1.0/60;
                                 f="4";
                             }
-                            else if(selectedDate.equals(preferences.getString("day5",""))){
+                            if(selectedDate.equals(preferences.getString("day5",""))){
                                 String[] e=p.getEndEventTime().split(":");
                                 String[] s=p.getStartEventTime().split(":");
                                 int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
@@ -432,7 +472,7 @@ public class CalendarFragment extends Fragment {
                                 factor+=temp*1.0/60;
                                 f="5";
                             }
-                            else if(selectedDate.equals(preferences.getString("day6",""))){
+                            if(selectedDate.equals(preferences.getString("day6",""))){
                                 String[] e=p.getEndEventTime().split(":");
                                 String[] s=p.getStartEventTime().split(":");
                                 int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
@@ -440,7 +480,7 @@ public class CalendarFragment extends Fragment {
                                 factor+=temp*1.0/60;
                                 f="6";
                             }
-                            else if(selectedDate.equals(preferences.getString("day7",""))){
+                            if(selectedDate.equals(preferences.getString("day7",""))){
                                 String[] e=p.getEndEventTime().split(":");
                                 String[] s=p.getStartEventTime().split(":");
                                 int temp=(Integer.parseInt(e[0])*60 + Integer.parseInt(e[1]))-(Integer.parseInt(s[0])*60 + Integer.parseInt(s[1]));
@@ -498,6 +538,8 @@ public class CalendarFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

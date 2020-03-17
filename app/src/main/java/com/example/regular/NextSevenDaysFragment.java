@@ -4,17 +4,21 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,6 +32,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -50,14 +55,12 @@ public class NextSevenDaysFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    TextView tv1,tv2,tv3,tv4,tv5,tv6,tv7;
+    TextView tv1,tv2,tv3,tv4,tv5,tv6,tv7,busyTV,workingTV;
     Button checkBusyBtn;
-    int s1,s2,s3,s4,s5,s6,s7;
-    ArrayList<Events> list1,list2,list3,list4,list5,list6,list7;
-    FirebaseDatabase database;
-    DatabaseReference ref;
-    GoogleSignInAccount acct;
+    TextToSpeech tts;
     SharedPreferences preferences;
+    LinearLayout linearLayout;
+    float s;
 
     private OnFragmentInteractionListener mListener;
 
@@ -98,9 +101,9 @@ public class NextSevenDaysFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_next_seven_days, container, false);
 
-        database = FirebaseDatabase.getInstance();
-        acct = GoogleSignIn.getLastSignedInAccount(getContext());
-        ref = database.getReference("Events").child(acct.getId());
+
+
+
         preferences = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
 
         tv1 = (TextView) view.findViewById(R.id.seven_day1);
@@ -111,8 +114,9 @@ public class NextSevenDaysFragment extends Fragment {
         tv6 = (TextView) view.findViewById(R.id.seven_day6);
         tv7 = (TextView) view.findViewById(R.id.seven_day7);
         checkBusyBtn=view.findViewById(R.id.check_busy_btn);
-        list1=new ArrayList<Events>();
-        list2=new ArrayList<Events>();
+        linearLayout=view.findViewById(R.id.working_hrs);
+        busyTV=view.findViewById(R.id.busy_tv);
+        workingTV=view.findViewById(R.id.working_tv);
 
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Calendar cal = Calendar.getInstance();
@@ -139,20 +143,102 @@ public class NextSevenDaysFragment extends Fragment {
         checkBusyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(preferences.getFloat("factor1", (float) 0.0)>0)
-                    tv1.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
-                if(preferences.getFloat("factor2", (float) 0.0)>0)
-                    tv2.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
-                if(preferences.getFloat("factor3", (float) 0.0)>0)
-                    tv3.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
-                if(preferences.getFloat("factor4", (float) 0.0)>0)
-                    tv4.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
-                if(preferences.getFloat("factor5", (float) 0.0)>0)
-                    tv5.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
-                if(preferences.getFloat("factor6", (float) 0.0)>0)
-                    tv6.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
-                if(preferences.getFloat("factor7", (float) 0.0)>0)
-                    tv7.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
+                String count=preferences.getString("DaysCounter","");
+                Log.i("Counterss",count);
+                if(count.contains("1") && count.contains("2") && count.contains("3") && count.contains("4") && count.contains("5") && count.contains("6") && count.contains("7")) {
+                    linearLayout.setVisibility(View.VISIBLE);
+                    workingTV.setVisibility(View.VISIBLE);
+                    s=preferences.getFloat("factor1", (float) 0.0);
+                    if (preferences.getFloat("factor1", (float) 0.0) == 0)
+                        tv1.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
+                    if (preferences.getFloat("factor1", (float) 0.0) > 0 && preferences.getFloat("factor1", (float) 0.0) < 3.5)
+                        tv1.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
+                    if (preferences.getFloat("factor1", (float) 0.0) > 3.5)
+                        tv1.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
+
+                    s+=preferences.getFloat("factor2", (float) 0.0);
+                    if (preferences.getFloat("factor2", (float) 0.0) == 0)
+                        tv2.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
+                    if (preferences.getFloat("factor2", (float) 0.0) > 0 && preferences.getFloat("factor2", (float) 0.0) < 3.5)
+                        tv2.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
+                    if (preferences.getFloat("factor2", (float) 0.0) > 3.5)
+                        tv2.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
+
+                    s+=preferences.getFloat("factor3", (float) 0.0);
+                    if (preferences.getFloat("factor3", (float) 0.0) == 0)
+                        tv3.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
+                    if (preferences.getFloat("factor3", (float) 0.0) > 0 && preferences.getFloat("factor3", (float) 0.0) < 3.5)
+                        tv3.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
+                    if (preferences.getFloat("factor3", (float) 0.0) > 3.5)
+                        tv3.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
+
+                    s+=preferences.getFloat("factor4", (float) 0.0);
+                    if (preferences.getFloat("factor4", (float) 0.0) == 0)
+                        tv4.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
+                    if (preferences.getFloat("factor4", (float) 0.0) > 0 && preferences.getFloat("factor4", (float) 0.0) < 3.5)
+                        tv4.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
+                    if (preferences.getFloat("factor4", (float) 0.0) > 3.5)
+                        tv4.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
+
+                    s+=preferences.getFloat("factor5", (float) 0.0);
+                    if (preferences.getFloat("factor5", (float) 0.0) == 0)
+                        tv5.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
+                    if (preferences.getFloat("factor5", (float) 0.0) > 0 && preferences.getFloat("factor5", (float) 0.0) < 3.5)
+                        tv5.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
+                    if (preferences.getFloat("factor5", (float) 0.0) > 3.5)
+                        tv5.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
+
+                    s+=preferences.getFloat("factor6", (float) 0.0);
+                    if (preferences.getFloat("factor6", (float) 0.0) == 0)
+                        tv6.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
+                    if (preferences.getFloat("factor6", (float) 0.0) > 0 && preferences.getFloat("factor6", (float) 0.0) < 3.5)
+                        tv6.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
+                    if (preferences.getFloat("factor6", (float) 0.0) > 3.5)
+                        tv6.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
+
+                    s+=preferences.getFloat("factor7", (float) 0.0);
+                    if (preferences.getFloat("factor7", (float) 0.0) == 0)
+                        tv7.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
+                    if (preferences.getFloat("factor7", (float) 0.0) > 0 && preferences.getFloat("factor7", (float) 0.0) < 3.5)
+                        tv7.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
+                    if (preferences.getFloat("factor7", (float) 0.0) > 3.5)
+                        tv7.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
+
+                    s=s/7;
+                    final String text;
+                    if(s==0)
+                        text="Free!";
+                    else if(s>0 && s<1.5)
+                        text="Free! but got some work.";
+                    else if(s>1.5 && s<2.5)
+                        text="Busy! but can manage some work.";
+                    else if(s>2.5 && s<3.5)
+                        text="Busy!";
+                    else
+                        text="Very Busy!";
+                    busyTV.setText(text);
+                    busyTV.setVisibility(View.VISIBLE);
+
+                    tts = new TextToSpeech(getContext(), new TextToSpeech.OnInitListener() {
+                        @Override
+                        public void onInit(int status) {
+                            if (status == TextToSpeech.SUCCESS) {
+                                int result = tts.setLanguage(Locale.US);
+                                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                                    Log.e("TTS", "This Language is not supported");
+                                }
+                                speak(text);
+
+                            } else {
+                                Log.e("TTS", "Initilization Failed!");
+                            }
+                        }
+                    });
+
+                }
+                else {
+                    Toast.makeText(getContext(),"View the week first",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -197,5 +283,20 @@ public class NextSevenDaysFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    private void speak(String text){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+        }else{
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }
+    }
+    @Override
+    public void onDestroy() {
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
     }
 }

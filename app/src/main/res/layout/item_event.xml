@@ -13,7 +13,7 @@
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="14dp"
+            android:layout_marginLeft="8dp"
             android:tint="@color/cherry_tomato"
             android:src="@drawable/ic_other"
             android:id="@+id/item_icon">
@@ -64,6 +64,14 @@
             android:layout_marginLeft="4dp"
             android:id="@+id/item_end_time"
             android:layout_centerVertical="true"></TextView>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:tint="#ffff00"
+            android:src="@drawable/ic_star"
+            android:id="@+id/item_star"
+            android:visibility="gone">
+        </ImageView>
 
     </LinearLayout>
 

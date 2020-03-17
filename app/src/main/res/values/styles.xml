@@ -16,4 +16,14 @@
         <item name="android:textColorPrimary">@color/cherry_tomato</item>
         <item name="android:textColorSecondary">@color/lightBlack</item>
     </style>
+    <style name="SpinnerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/cherry_tomato</item>
+        <item name="android:textColorPrimary">@color/cherry_tomato</item>
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/cherry_tomato</item>
+        <item name="colorSwitchThumbNormal">@color/dark_cherry1</item>
+        <item name="android:colorForeground">@color/dark_cherry2</item>
+    </style>
 </resources>

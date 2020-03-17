@@ -94,6 +94,8 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
         else if(checkLabel.equals("Other"))
             holder.imageView.setImageResource(R.drawable.ic_other);
         holder.labelTV.setText(checkLabel);
+        if(eventsAda.get(position).getStar())
+            holder.starView.setVisibility(View.VISIBLE);
         holder.headingTV.setText(eventsAda.get(position).getHeading());
         holder.startTV.setText(eventsAda.get(position).getStartEventTime());
         holder.endTV.setText(eventsAda.get(position).getEndEventTime());
@@ -145,13 +147,14 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
 
     public class ProgrammingViewHolder extends RecyclerView.ViewHolder{
         TextView headingTV,startTV,endTV,labelTV;
-        ImageView imageView;
+        ImageView imageView,starView;
         LinearLayout linearLayout;
 
         public ProgrammingViewHolder(@NonNull View itemView) {
             super(itemView);
             linearLayout=(LinearLayout)itemView.findViewById(R.id.item_linear);
             imageView=(ImageView)itemView.findViewById(R.id.item_icon);
+            starView=(ImageView)itemView.findViewById(R.id.item_star);
             labelTV=(TextView) itemView.findViewById(R.id.item_label);
             headingTV=(TextView) itemView.findViewById(R.id.item_heading);
             startTV=(TextView)itemView.findViewById(R.id.item_start_time);

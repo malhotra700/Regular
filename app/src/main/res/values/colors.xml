@@ -11,5 +11,7 @@
     <color name="black">#2D2926</color>
     <color name="lightBlack">#423e3b</color>
     <color name="cherry_tomato">#E94B3C</color>
+    <color name="dark_cherry1">#8b2d24</color>
+    <color name="dark_cherry2">#5d1e18</color>
     <color name="grey">#a6a6a6</color>
 </resources>

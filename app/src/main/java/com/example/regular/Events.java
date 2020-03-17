@@ -2,15 +2,25 @@ package com.example.regular;
 
 public class Events {
     private String label,heading,startEventTime,endEventTime;
+    Boolean star;
 
     public Events(){
 
     }
-    public Events(String label, String heading, String startEventTime, String endEventTime) {
+    public Events(String label, String heading, String startEventTime, String endEventTime,Boolean star) {
         this.label=label;
         this.heading = heading;
         this.startEventTime = startEventTime;
         this.endEventTime = endEventTime;
+        this.star=star;
+    }
+
+    public Boolean getStar() {
+        return star;
+    }
+
+    public void setStar(Boolean star) {
+        this.star = star;
     }
 
     public String getLabel() {
