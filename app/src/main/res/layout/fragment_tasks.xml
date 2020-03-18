@@ -3,13 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
     tools:context=".TasksFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Tasks"
-        android:textColor="@color/cherry_tomato"/>
+        android:id="@+id/tasks_recycler">
+    </androidx.recyclerview.widget.RecyclerView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/ic_pencil"
+        android:backgroundTint="@color/cherry_tomato"
+        android:outlineAmbientShadowColor="@color/cherry_tomato"
+        android:outlineSpotShadowColor="@color/cherry_tomato"
+        app:borderWidth="0dp"
+        android:tint="@color/black"
+        android:id="@+id/fab_task"
+        ></com.google.android.material.floatingactionbutton.FloatingActionButton>
 
 </FrameLayout>

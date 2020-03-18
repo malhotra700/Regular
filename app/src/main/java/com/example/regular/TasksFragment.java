@@ -1,14 +1,36 @@
 package com.example.regular;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 
 /**
@@ -28,8 +50,20 @@ public class TasksFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Context mContext;
+    private AppCompatActivity mActivity;
+    RecyclerView recyclerView;
+    FloatingActionButton floatingActionButton;
+    ArrayList<Notes> list;
+    FirebaseDatabase database;
+    DatabaseReference readRef;
+    Notes notes;
+    EditText noteHeading,noteText;
+    Button saveNotesButton;
+    Dialog mdialog;
+    GoogleSignInAccount acct;
 
-    private OnFragmentInteractionListener mListener;
+    private CalendarFragment.OnFragmentInteractionListener mListener;
 
     public TasksFragment() {
         // Required empty public constructor
@@ -66,7 +100,62 @@ public class TasksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tasks, container, false);
+        View view= inflater.inflate(R.layout.fragment_tasks, container, false);
+        recyclerView=(RecyclerView)view.findViewById(R.id.tasks_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        list=new ArrayList<Notes>();
+        notes=new Notes();
+        database=FirebaseDatabase.getInstance();
+        acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+        readRef=database.getReference("Notes").child(acct.getId());
+        recyclerView.setAdapter(new NotesAdapter(getContext(),list,mActivity));
+        readRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()) {
+                    Notes p = dataSnapshot1.getValue(Notes.class);
+                    list.add(p);
+                }
+                //Log.i("taskcheck",list.toString());
+                recyclerView.setAdapter(new NotesAdapter(getContext(),list,mActivity));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        mdialog = new Dialog(getActivity());
+        mdialog.setContentView(R.layout.popup_note);
+        mdialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+        mdialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        floatingActionButton=view.findViewById(R.id.fab_task);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noteHeading=mdialog.findViewById(R.id.task_heading);
+                noteText=mdialog.findViewById(R.id.task_text);
+                saveNotesButton=mdialog.findViewById(R.id.add_task_btn);
+                saveNotesButton.setOnClickListener(new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.M)
+                    @Override
+                    public void onClick(View v) {
+                        notes.setHeading(noteHeading.getText().toString());
+                        notes.setText(noteText.getText().toString());
+                        readRef.child(acct.getId()+notes.getHeading()).setValue(notes);
+                        mdialog.dismiss();
+                        mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.l_layout,new TasksFragment()).commit();
+                    }
+                });
+                mdialog.show();
+            }
+        });
+
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -79,6 +168,8 @@ public class TasksFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mContext=context;
+        mActivity=(AppCompatActivity)mContext;
     }
 
     @Override
