@@ -15,7 +15,7 @@
         android:textColor="@color/cherry_tomato"
         android:textStyle="bold"
         android:layout_marginTop="5dp"
-        android:id="@+id/header_user">
+        android:id="@+id/header_user_tv">
 
     </TextView>
     <TextView
@@ -29,5 +29,10 @@
         >
 
     </TextView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/lightBlack"></View>
 
 </LinearLayout>

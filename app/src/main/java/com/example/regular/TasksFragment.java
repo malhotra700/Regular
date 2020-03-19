@@ -2,6 +2,7 @@ package com.example.regular;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,8 +18,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -59,7 +63,7 @@ public class TasksFragment extends Fragment {
     DatabaseReference readRef;
     Notes notes;
     EditText noteHeading,noteText;
-    Button saveNotesButton;
+    Button saveNotesButton,shareToWhatsappBtn;
     Dialog mdialog;
     GoogleSignInAccount acct;
 
@@ -118,6 +122,7 @@ public class TasksFragment extends Fragment {
                 }
                 //Log.i("taskcheck",list.toString());
                 recyclerView.setAdapter(new NotesAdapter(getContext(),list,mActivity));
+                refreshRecycler(recyclerView);
             }
 
             @Override
@@ -137,6 +142,22 @@ public class TasksFragment extends Fragment {
             public void onClick(View v) {
                 noteHeading=mdialog.findViewById(R.id.task_heading);
                 noteText=mdialog.findViewById(R.id.task_text);
+                shareToWhatsappBtn=mdialog.findViewById(R.id.share_to_whatsapp);
+                shareToWhatsappBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+                        whatsappIntent.setType("text/plain");
+                        whatsappIntent.setPackage("com.whatsapp");
+                        whatsappIntent.putExtra(Intent.EXTRA_TEXT, noteHeading.getText().toString()+"\n"+
+                                noteText.getText().toString());
+                        try {
+                            mActivity.startActivity(whatsappIntent);
+                        } catch (android.content.ActivityNotFoundException ex) {
+                            Toast.makeText(mContext,"WhatsApp is not installed!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
                 saveNotesButton=mdialog.findViewById(R.id.add_task_btn);
                 saveNotesButton.setOnClickListener(new View.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -156,6 +177,15 @@ public class TasksFragment extends Fragment {
 
 
         return view;
+    }
+    private void refreshRecycler(final RecyclerView recyclerView) {
+        final Context context = recyclerView.getContext();
+        final LayoutAnimationController controller =
+                AnimationUtils.loadLayoutAnimation(context, R.anim.layout_anim_fall_down);
+
+        recyclerView.setLayoutAnimation(controller);
+        recyclerView.getAdapter().notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

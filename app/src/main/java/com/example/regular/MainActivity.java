@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         //editor.putString("DaysCounter","1");
+        if(preferences.getString("padBitmap","").isEmpty())
+            editor.putString("padBitmap","");
 
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Calendar cal = Calendar.getInstance();

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="420dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@color/black"
+        android:layout_alignParentTop="true"
+        android:text="Scribble to remember"
+        android:gravity="center"
+        android:id="@+id/doodleTV">
+    </TextView>
+    <com.github.gcacace.signaturepad.views.SignaturePad
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:layout_below="@+id/doodleTV"
+        android:layout_above="@+id/clear_doodle_btn"
+        app:penColor="@color/cherry_tomato"
+        android:id="@+id/doodle_pad">
+    </com.github.gcacace.signaturepad.views.SignaturePad>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_alignParentBottom="true"
+        android:text="Clear Pad"
+        android:background="@color/cherry_tomato"
+        android:textSize="18sp"
+        android:textColor="#ffffff"
+        android:lineSpacingExtra="14sp"
+        android:id="@+id/clear_doodle_btn">
+    </Button>
+
+</RelativeLayout>

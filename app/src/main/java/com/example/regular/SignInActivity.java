@@ -1,9 +1,11 @@
 package com.example.regular;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +26,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.Objects;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -59,10 +63,15 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         mAuthListener=new FirebaseAuth.AuthStateListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser()!=null){
-                    startActivity(new Intent(SignInActivity.this,HomeActivity.class));
+                    Intent start=new Intent(SignInActivity.this,HomeActivity.class);
+                    String s=Objects.requireNonNull(firebaseAuth.getCurrentUser().getDisplayName());
+                    Log.i("checkUser",s);
+                    start.putExtra("currentUser",s);
+                    startActivity(start);
                     finish();
                 }
             }

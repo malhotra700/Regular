@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,7 +38,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     GoogleSignInAccount acct;
     Dialog mdialog;
     EditText noteHeading,noteText;
-    Button saveNotesButton;
+    Button saveNotesButton,shareToWhatsappBtn;
     Notes noteTemp;
 
     public  NotesAdapter(Context c,ArrayList<Notes> n,AppCompatActivity mActivity){
@@ -88,6 +89,22 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                 noteHeading.setText(notesAda.get(position).getHeading());
                 noteText=mdialog.findViewById(R.id.task_text);
                 noteText.setText(notesAda.get(position).getText());
+                shareToWhatsappBtn=mdialog.findViewById(R.id.share_to_whatsapp);
+                shareToWhatsappBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+                        whatsappIntent.setType("text/plain");
+                        whatsappIntent.setPackage("com.whatsapp");
+                        whatsappIntent.putExtra(Intent.EXTRA_TEXT, noteHeading.getText().toString()+"\n"+
+                                noteText.getText().toString());
+                        try {
+                            mActivity.startActivity(whatsappIntent);
+                        } catch (android.content.ActivityNotFoundException ex) {
+                            Toast.makeText(context,"WhatsApp is not installed!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
                 saveNotesButton=mdialog.findViewById(R.id.add_task_btn);
                 saveNotesButton.setText("Update Note");
                 saveNotesButton.setOnClickListener(new View.OnClickListener() {

@@ -69,7 +69,7 @@
                     android:layout_height="match_parent"
                     android:id="@+id/task_text"
                     android:inputType="textMultiLine"
-                    android:minLines="10"
+                    android:minLines="4"
                     android:maxLines="20"
                     android:gravity="start"
                     android:background="@color/black"
@@ -83,6 +83,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/lightBlack"></View>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_rounded_rectangle"
+                    android:text="Share to WhatsApp"
+                    android:textColor="@color/white"
+                    android:drawableRight="@drawable/ic_share"
+                    android:drawableTint="@color/white"
+                    android:layout_marginTop="16dp"
+                    android:paddingRight="8dp"
+                    android:id="@+id/share_to_whatsapp">
+                </Button>
+
             </LinearLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
