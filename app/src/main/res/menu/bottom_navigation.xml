@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/calendar_bottom_menu" android:title="Calendar" android:icon="@drawable/ic_calendar"/>
+    <item android:id="@+id/next7days_bottom_menu" android:title="Next 7 days" android:icon="@drawable/ic_next7"/>
+</menu>

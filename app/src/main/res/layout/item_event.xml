@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:padding="2dp"
+    android:background="@drawable/shape_rounded_rectangle">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="4dp"
-        android:padding="2dp"
-        android:background="@drawable/shape_rounded_rectangle"
         android:id="@+id/item_linear">
         <ImageView
             android:layout_width="20dp"
@@ -74,5 +74,18 @@
         </ImageView>
 
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_alarm"
+        android:id="@+id/item_alarm"
+        android:tint="@color/white"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone">
+    </ImageView>
+    </RelativeLayout>
 
 </LinearLayout>

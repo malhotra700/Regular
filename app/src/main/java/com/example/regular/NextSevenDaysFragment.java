@@ -60,7 +60,10 @@ public class NextSevenDaysFragment extends Fragment {
     TextToSpeech tts;
     SharedPreferences preferences;
     LinearLayout linearLayout;
-    float s;
+    FirebaseDatabase database;
+    DatabaseReference readRef;
+    GoogleSignInAccount acct;
+    float factor1,factor2,factor3,factor4,factor5,factor6,factor7,s;
 
     private OnFragmentInteractionListener mListener;
 
@@ -101,7 +104,9 @@ public class NextSevenDaysFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_next_seven_days, container, false);
 
-
+        acct = GoogleSignIn.getLastSignedInAccount(getActivity());
+        database=FirebaseDatabase.getInstance();
+        readRef=database.getReference("Events").child(acct.getId());
 
 
         preferences = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
@@ -117,91 +122,246 @@ public class NextSevenDaysFragment extends Fragment {
         linearLayout=view.findViewById(R.id.working_hrs);
         busyTV=view.findViewById(R.id.busy_tv);
         workingTV=view.findViewById(R.id.working_tv);
+        factor1=factor2=factor3=factor4=factor5=factor6=factor7=0;
 
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Calendar cal = Calendar.getInstance();
         tv1.setText("Today");
+        readRef.child(dateFormat.format(cal.getTime())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                    Events p=dataSnapshot1.getValue(Events.class);
+                    int temp=1;
+                    if (!p.getEndEventTime().isEmpty()) {
+                        String[] e = p.getEndEventTime().split(":");
+                        String[] s = p.getStartEventTime().split(":");
+                        temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                        }
+                        factor1+=temp*1.0/60;
+
+                }
+                Log.i("Dateeecf1",factor1+"");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         cal.add(Calendar.DATE, 1);
         tv2.setText(dateFormat.format(cal.getTime()));
+        readRef.child(dateFormat.format(cal.getTime())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                    Events p=dataSnapshot1.getValue(Events.class);
+                    int temp=1;
+                    if (!p.getEndEventTime().isEmpty()) {
+                        String[] e = p.getEndEventTime().split(":");
+                        String[] s = p.getStartEventTime().split(":");
+                        temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                    }
+                    factor2+=temp*1.0/60;
+
+                }
+                Log.i("Dateeecf2",factor2+"");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         cal.add(Calendar.DATE, 1);
         tv3.setText(dateFormat.format(cal.getTime()));
+        readRef.child(dateFormat.format(cal.getTime())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                    Events p=dataSnapshot1.getValue(Events.class);
+                    int temp=1;
+                    if (!p.getEndEventTime().isEmpty()) {
+                        String[] e = p.getEndEventTime().split(":");
+                        String[] s = p.getStartEventTime().split(":");
+                        temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                    }
+                    factor3+=temp*1.0/60;
+
+                }
+                Log.i("Dateeecf3",factor3+"");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         cal.add(Calendar.DATE, 1);
         tv4.setText(dateFormat.format(cal.getTime()));
+        readRef.child(dateFormat.format(cal.getTime())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                    Events p=dataSnapshot1.getValue(Events.class);
+                    int temp=1;
+                    if (!p.getEndEventTime().isEmpty()) {
+                        String[] e = p.getEndEventTime().split(":");
+                        String[] s = p.getStartEventTime().split(":");
+                        temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                    }
+                    factor4+=temp*1.0/60;
+
+                }
+                Log.i("Dateeecf4",factor4+"");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         cal.add(Calendar.DATE, 1);
         tv5.setText(dateFormat.format(cal.getTime()));
+        readRef.child(dateFormat.format(cal.getTime())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                    Events p=dataSnapshot1.getValue(Events.class);
+                    int temp=1;
+                    if (!p.getEndEventTime().isEmpty()) {
+                        String[] e = p.getEndEventTime().split(":");
+                        String[] s = p.getStartEventTime().split(":");
+                        temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                    }
+                    factor5+=temp*1.0/60;
+
+                }
+                Log.i("Dateeecf5",factor5+"");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         cal.add(Calendar.DATE, 1);
         tv6.setText(dateFormat.format(cal.getTime()));
+        readRef.child(dateFormat.format(cal.getTime())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                    Events p=dataSnapshot1.getValue(Events.class);
+                    int temp=1;
+                    if (!p.getEndEventTime().isEmpty()) {
+                        String[] e = p.getEndEventTime().split(":");
+                        String[] s = p.getStartEventTime().split(":");
+                        temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                    }
+                    factor6+=temp*1.0/60;
+
+                }
+                Log.i("Dateeecf6",factor6+"");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         cal.add(Calendar.DATE, 1);
         tv7.setText(dateFormat.format(cal.getTime()));
+        readRef.child(dateFormat.format(cal.getTime())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                    Events p=dataSnapshot1.getValue(Events.class);
+                    int temp=1;
+                    if (!p.getEndEventTime().isEmpty()) {
+                        String[] e = p.getEndEventTime().split(":");
+                        String[] s = p.getStartEventTime().split(":");
+                        temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
+                    }
+                    factor7+=temp*1.0/60;
+
+                }
+                Log.i("Dateeecf7",factor7+"");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         checkBusyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String count=preferences.getString("DaysCounter","");
                 Log.i("Counterss",count);
-                if(count.contains("1") && count.contains("2") && count.contains("3") && count.contains("4") && count.contains("5") && count.contains("6") && count.contains("7")) {
+
                     linearLayout.setVisibility(View.VISIBLE);
                     workingTV.setVisibility(View.VISIBLE);
-                    s=preferences.getFloat("factor1", (float) 0.0);
-                    if (preferences.getFloat("factor1", (float) 0.0) == 0)
+                    s=factor1;
+                    if (factor1 == 0)
                         tv1.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
-                    if (preferences.getFloat("factor1", (float) 0.0) > 0 && preferences.getFloat("factor1", (float) 0.0) < 3.5)
+                    if (factor1> 0 && factor1< 3.5)
                         tv1.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
-                    if (preferences.getFloat("factor1", (float) 0.0) > 3.5)
+                    if (factor1> 3.5)
                         tv1.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
 
-                    s+=preferences.getFloat("factor2", (float) 0.0);
-                    if (preferences.getFloat("factor2", (float) 0.0) == 0)
+                    s+=factor2;
+                    if (factor2 == 0)
                         tv2.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
-                    if (preferences.getFloat("factor2", (float) 0.0) > 0 && preferences.getFloat("factor2", (float) 0.0) < 3.5)
+                    if (factor2 > 0 && factor2 < 3.5)
                         tv2.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
-                    if (preferences.getFloat("factor2", (float) 0.0) > 3.5)
+                    if (factor2 > 3.5)
                         tv2.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
 
-                    s+=preferences.getFloat("factor3", (float) 0.0);
-                    if (preferences.getFloat("factor3", (float) 0.0) == 0)
+                    s+=factor3;
+                    if (factor3 == 0)
                         tv3.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
-                    if (preferences.getFloat("factor3", (float) 0.0) > 0 && preferences.getFloat("factor3", (float) 0.0) < 3.5)
+                    if (factor3 > 0 && factor3 < 3.5)
                         tv3.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
-                    if (preferences.getFloat("factor3", (float) 0.0) > 3.5)
+                    if (factor3 > 3.5)
                         tv3.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
 
-                    s+=preferences.getFloat("factor4", (float) 0.0);
-                    if (preferences.getFloat("factor4", (float) 0.0) == 0)
+                    s+=factor4;
+                    if (factor4== 0)
                         tv4.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
-                    if (preferences.getFloat("factor4", (float) 0.0) > 0 && preferences.getFloat("factor4", (float) 0.0) < 3.5)
+                    if (factor4 > 0 && factor4 < 3.5)
                         tv4.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
-                    if (preferences.getFloat("factor4", (float) 0.0) > 3.5)
+                    if (factor4 > 3.5)
                         tv4.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
 
-                    s+=preferences.getFloat("factor5", (float) 0.0);
-                    if (preferences.getFloat("factor5", (float) 0.0) == 0)
+                    s+=factor5;
+                    if (factor5 == 0)
                         tv5.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
-                    if (preferences.getFloat("factor5", (float) 0.0) > 0 && preferences.getFloat("factor5", (float) 0.0) < 3.5)
+                    if (factor5 > 0 && factor5 < 3.5)
                         tv5.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
-                    if (preferences.getFloat("factor5", (float) 0.0) > 3.5)
+                    if (factor5> 3.5)
                         tv5.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
 
-                    s+=preferences.getFloat("factor6", (float) 0.0);
-                    if (preferences.getFloat("factor6", (float) 0.0) == 0)
+                    s+=factor6;
+                    if (factor6== 0)
                         tv6.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
-                    if (preferences.getFloat("factor6", (float) 0.0) > 0 && preferences.getFloat("factor6", (float) 0.0) < 3.5)
+                    if (factor6 > 0 && factor6 < 3.5)
                         tv6.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
-                    if (preferences.getFloat("factor6", (float) 0.0) > 3.5)
+                    if (factor6 > 3.5)
                         tv6.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
 
-                    s+=preferences.getFloat("factor7", (float) 0.0);
-                    if (preferences.getFloat("factor7", (float) 0.0) == 0)
+                    s+=factor7;
+                    if (factor7== 0)
                         tv7.setBackgroundColor(getActivity().getResources().getColor(R.color.cherry_tomato));
-                    if (preferences.getFloat("factor7", (float) 0.0) > 0 && preferences.getFloat("factor7", (float) 0.0) < 3.5)
+                    if (factor7 > 0 && factor7 < 3.5)
                         tv7.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry1));
-                    if (preferences.getFloat("factor7", (float) 0.0) > 3.5)
+                    if (factor7 > 3.5)
                         tv7.setBackgroundColor(getActivity().getResources().getColor(R.color.dark_cherry2));
 
                     s=s/7;
@@ -235,10 +395,6 @@ public class NextSevenDaysFragment extends Fragment {
                         }
                     });
 
-                }
-                else {
-                    Toast.makeText(getContext(),"View the week first",Toast.LENGTH_SHORT).show();
-                }
             }
         });
 

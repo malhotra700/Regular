@@ -53,8 +53,8 @@
         android:layout_gravity="start"
         app:background="@color/black"
         android:backgroundTint="@color/black"
-        app:itemTextColor="@color/cherry_tomato"
-        app:itemIconTint="@color/cherry_tomato"
+        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/white"
         app:menu="@menu/drawermenu"
 
 

@@ -55,7 +55,7 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProgrammingAdapter.ProgrammingViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ProgrammingAdapter.ProgrammingViewHolder holder, final int position) {
         String checkLabel=eventsAda.get(position).getLabel();
 
         prefs = context.getSharedPreferences("MyPref", MODE_PRIVATE);
@@ -120,7 +120,7 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
 
                                 Log.i("position",selected);
                                 ref.child(acct.getId()).child(selected).child(acct.getId()+eventsAda.get(position).getStartEventTime()+eventsAda.get(position).getEndEventTime()).removeValue();
-                                mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.l_layout,new EventsFragment()).commit();
+                                mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CalendarFragment()).commit();
                                 Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show();
                             }})
                         .setNegativeButton(android.R.string.no, null).show();
@@ -128,6 +128,8 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
             }
         });
         if(selected.equals(prefs.getString("day2",""))) {
+            if(!eventsAda.get(position).getStartEventTime().split(":")[0].isEmpty())
+                holder.alarmView.setVisibility(View.VISIBLE);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -135,6 +137,7 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
                     i.putExtra(AlarmClock.EXTRA_MESSAGE,eventsAda.get(position).getLabel()+" "+ eventsAda.get(position).getHeading());
                     String[] temp=eventsAda.get(position).getStartEventTime().split(":");
                     if(!temp[0].isEmpty()) {
+                       // holder.alarmView.setVisibility(View.VISIBLE);
                         int h = Integer.parseInt(temp[0]);
                         int m = Integer.parseInt(temp[1]);
                         i.putExtra(AlarmClock.EXTRA_HOUR, h);
@@ -159,7 +162,7 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
 
     public class ProgrammingViewHolder extends RecyclerView.ViewHolder{
         TextView headingTV,startTV,endTV,labelTV;
-        ImageView imageView,starView;
+        ImageView imageView,starView,alarmView;
         LinearLayout linearLayout;
 
         public ProgrammingViewHolder(@NonNull View itemView) {
@@ -167,6 +170,7 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
             linearLayout=(LinearLayout)itemView.findViewById(R.id.item_linear);
             imageView=(ImageView)itemView.findViewById(R.id.item_icon);
             starView=(ImageView)itemView.findViewById(R.id.item_star);
+            alarmView=(ImageView)itemView.findViewById(R.id.item_alarm);
             labelTV=(TextView) itemView.findViewById(R.id.item_label);
             headingTV=(TextView) itemView.findViewById(R.id.item_heading);
             startTV=(TextView)itemView.findViewById(R.id.item_start_time);

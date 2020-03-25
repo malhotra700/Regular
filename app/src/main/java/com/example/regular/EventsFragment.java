@@ -5,15 +5,18 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -79,57 +82,33 @@ public class EventsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_events, container, false);
-        preferences = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+       /* preferences = getActivity().getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("DaysCounter","1");
         editor.apply();
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
-        setupViewPager(viewPager);
-        // Set Tabs inside Toolbar
-        TabLayout tabs = (TabLayout) view.findViewById(R.id.tab_layout);
-        tabs.setupWithViewPager(viewPager);
+        */
+        BottomNavigationView bottomNavigationView=(BottomNavigationView)view.findViewById(R.id.nav_bottom);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CalendarFragment()).commit();
         return view;
     }
-    private void setupViewPager(ViewPager viewPager) {
 
-
-        Adapter adapter = new Adapter(getChildFragmentManager());
-        adapter.addFragment(new CalendarFragment(), "Calendar");
-        adapter.addFragment(new NextSevenDaysFragment(), "Next 7 Days");
-        viewPager.setAdapter(adapter);
-
-
-
-    }
-
-    static class Adapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public Adapter(FragmentManager manager) {
-            super(manager);
-        }
-
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener=new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            Fragment selectedFragment=null;
+            switch (menuItem.getItemId()){
+                case R.id.calendar_bottom_menu:
+                    selectedFragment=new CalendarFragment();
+                    break;
+                case R.id.next7days_bottom_menu:
+                    selectedFragment=new NextSevenDaysFragment();
+                    break;
+            }
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+            return true;
         }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-    }
+    };
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

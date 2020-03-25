@@ -163,7 +163,10 @@ public class TasksFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onClick(View v) {
-                        notes.setHeading(noteHeading.getText().toString());
+                        if(noteHeading.getText().toString().isEmpty())
+                            notes.setHeading("Untitled "+Calendar.getInstance().getTime());
+                        else
+                            notes.setHeading(noteHeading.getText().toString());
                         notes.setText(noteText.getText().toString());
                         readRef.child(acct.getId()+notes.getHeading()).setValue(notes);
                         mdialog.dismiss();
