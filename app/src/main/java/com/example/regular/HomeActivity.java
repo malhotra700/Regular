@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -34,6 +35,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mikhaellopez.circularimageview.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
@@ -50,9 +53,11 @@ public class HomeActivity extends AppCompatActivity {
     FirebaseDatabase database;
     GoogleSignInAccount acct;
     TextView headeruserTV;
+    CircularImageView circularImageView;
     ImageButton toolbarYourNoteBtn;
     SignaturePad signaturePad;
     Button clearPadBtn;
+    Uri imgPath=Uri.parse("android.resource://com.example.regular/"+R.drawable.pic);
     Dialog mdialog;
     SharedPreferences preferences;
 
@@ -128,21 +133,25 @@ public class HomeActivity extends AppCompatActivity {
         NavigationView navigationView=(NavigationView)findViewById(R.id.navigationView);
         mToggle=new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open,R.string.close);
 
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -1);
-        String val=dateFormat.format(cal.getTime());
+
         database= FirebaseDatabase.getInstance();
         ref=database.getReference("Events");
         acct = GoogleSignIn.getLastSignedInAccount(this);
 
         View headerView = navigationView.getHeaderView(0);
         headeruserTV=(TextView)headerView.findViewById(R.id.header_user_tv);
+        circularImageView=headerView.findViewById(R.id.user_image);
+        imgPath=acct.getPhotoUrl();
+        Picasso.get().load(imgPath.toString()).into(circularImageView);
+
         String curr=getIntent().getExtras().getString("currentUser");
         Log.i("checkUser1",curr);
-        headeruserTV.setText("Hey! "+curr);
+        headeruserTV.setText("Hey! "+curr.split(" ")[0]);
 
-
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        String val=dateFormat.format(cal.getTime());
         ref.child(acct.getId()).child(val).removeValue();
 
 

@@ -14,14 +14,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -35,6 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 
 /**
@@ -63,7 +70,12 @@ public class TasksFragment extends Fragment {
     DatabaseReference readRef;
     Notes notes;
     EditText noteHeading,noteText;
-    Button saveNotesButton,shareToWhatsappBtn;
+    Button saveNotesButton,addBulletBtn;
+    ImageButton shareToWhatsappBtn,shareToGmailBtn;
+    LinearLayout extraBtns;
+    ImageButton sttBtn;
+    SpeechRecognizer mspeechRecog;
+    Intent mSpeechRecogInt;
     Dialog mdialog;
     GoogleSignInAccount acct;
 
@@ -141,7 +153,105 @@ public class TasksFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 noteHeading=mdialog.findViewById(R.id.task_heading);
+                extraBtns=mdialog.findViewById(R.id.extra_btns);
                 noteText=mdialog.findViewById(R.id.task_text);
+                noteText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (hasFocus) {
+                            extraBtns.setVisibility(View.VISIBLE);
+                        } else {
+                            extraBtns.setVisibility(View.GONE);
+                        }
+                    }
+                });
+                addBulletBtn=mdialog.findViewById(R.id.task_bullet_btn);
+                addBulletBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //String abc=noteText.getText().toString() + " • ";
+                        //noteText.setText(abc);
+                        //noteText.setSelection(noteText.length());
+                        noteText.getText().insert(noteText.getSelectionStart(),  " • ");
+
+                    }
+                });
+
+                mspeechRecog = SpeechRecognizer.createSpeechRecognizer(getContext());
+                mSpeechRecogInt = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                mSpeechRecogInt.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                mSpeechRecogInt.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+                mspeechRecog.setRecognitionListener(new RecognitionListener() {
+                    @Override
+                    public void onReadyForSpeech(Bundle params) {
+
+                    }
+
+                    @Override
+                    public void onBeginningOfSpeech() {
+
+                    }
+
+                    @Override
+                    public void onRmsChanged(float rmsdB) {
+
+                    }
+
+                    @Override
+                    public void onBufferReceived(byte[] buffer) {
+
+                    }
+
+                    @Override
+                    public void onEndOfSpeech() {
+
+                    }
+
+                    @Override
+                    public void onError(int error) {
+
+                    }
+
+                    @Override
+                    public void onResults(Bundle results) {
+                        ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                        Log.i("sttCheck",matches.toString());
+                        if (matches != null) {
+                            String recordstr = matches.get(0);
+                            noteText.getText().insert(noteText.getSelectionStart()," "+recordstr  );
+                        }
+
+                    }
+
+                    @Override
+                    public void onPartialResults(Bundle partialResults) {
+
+                    }
+
+                    @Override
+                    public void onEvent(int eventType, Bundle params) {
+
+                    }
+                });
+                sttBtn=mdialog.findViewById(R.id.task_stt_btn);
+                sttBtn.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        Log.i("sttCheck","touched");
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_UP:
+                                mspeechRecog.stopListening();
+                                Log.i("sttCheck1","hello");
+                                break;
+                            case MotionEvent.ACTION_DOWN:
+                                mspeechRecog.startListening(mSpeechRecogInt);
+                                Log.i("sttCheck2","hello");
+                                break;
+                        }
+                        return false;
+                    }
+                });
                 shareToWhatsappBtn=mdialog.findViewById(R.id.share_to_whatsapp);
                 shareToWhatsappBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -155,6 +265,22 @@ public class TasksFragment extends Fragment {
                             mActivity.startActivity(whatsappIntent);
                         } catch (android.content.ActivityNotFoundException ex) {
                             Toast.makeText(mContext,"WhatsApp is not installed!",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                shareToGmailBtn=mdialog.findViewById(R.id.share_to_gmail);
+                shareToGmailBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW)
+                                .setType("plain/text")
+                                .setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail")
+                                .putExtra(Intent.EXTRA_SUBJECT, noteHeading.getText().toString())
+                                .putExtra(Intent.EXTRA_TEXT, noteText.getText().toString());
+                        try {
+                            mActivity.startActivity(intent);
+                        } catch (android.content.ActivityNotFoundException ex) {
+                            Toast.makeText(mContext,"Gmail is not installed!",Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

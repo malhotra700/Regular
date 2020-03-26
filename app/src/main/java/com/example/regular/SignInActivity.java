@@ -3,8 +3,12 @@ package com.example.regular;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +39,12 @@ public class SignInActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     private final static int RC_SIGN_IN=2;
     GoogleSignInClient mGoogleSignInClient;
+    private final static int PERMISSION_ALL = 1;
+    private final static String[] PERMISSIONS = {
+            Manifest.permission.INTERNET,
+            Manifest.permission.SET_ALARM,
+            Manifest.permission.RECORD_AUDIO,
+    };
 
     FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -50,6 +60,11 @@ public class SignInActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sign_in);
 
+        for (int i = 0; i < PERMISSIONS.length; i++) {
+            if (!hasPermissions(this, PERMISSIONS)) {
+                ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+            }
+        }
 
         signInButton = (SignInButton)findViewById(R.id.sign_in_button);
         firebaseAuth=FirebaseAuth.getInstance();
@@ -81,6 +96,16 @@ public class SignInActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void signIn() {

@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.example.regular.HomeActivity.*;
 
@@ -127,8 +128,9 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
                 return true;
             }
         });
+        int temp = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)*60 + Calendar.getInstance().get(Calendar.MINUTE);
         if(selected.equals(prefs.getString("day2",""))) {
-            if(!eventsAda.get(position).getStartEventTime().split(":")[0].isEmpty())
+            if(!eventsAda.get(position).getStartEventTime().split(":")[0].isEmpty() && (Integer.parseInt(eventsAda.get(position).getStartEventTime().split(":")[0])*60 + Integer.parseInt(eventsAda.get(position).getStartEventTime().split(":")[1]))<temp)
                 holder.alarmView.setVisibility(View.VISIBLE);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -137,7 +139,27 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
                     i.putExtra(AlarmClock.EXTRA_MESSAGE,eventsAda.get(position).getLabel()+" "+ eventsAda.get(position).getHeading());
                     String[] temp=eventsAda.get(position).getStartEventTime().split(":");
                     if(!temp[0].isEmpty()) {
-                       // holder.alarmView.setVisibility(View.VISIBLE);
+                        // holder.alarmView.setVisibility(View.VISIBLE);
+                        int h = Integer.parseInt(temp[0]);
+                        int m = Integer.parseInt(temp[1]);
+                        i.putExtra(AlarmClock.EXTRA_HOUR, h);
+                        i.putExtra(AlarmClock.EXTRA_MINUTES, m);
+                        context.startActivity(i);
+                    }
+                }
+            });
+        }
+        if(selected.equals(prefs.getString("day1",""))) {
+            if(!eventsAda.get(position).getStartEventTime().split(":")[0].isEmpty() && (Integer.parseInt(eventsAda.get(position).getStartEventTime().split(":")[0])*60 + Integer.parseInt(eventsAda.get(position).getStartEventTime().split(":")[1]))>temp)
+                holder.alarmView.setVisibility(View.VISIBLE);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
+                    i.putExtra(AlarmClock.EXTRA_MESSAGE,eventsAda.get(position).getLabel()+" "+ eventsAda.get(position).getHeading());
+                    String[] temp=eventsAda.get(position).getStartEventTime().split(":");
+                    if(!temp[0].isEmpty()) {
+                        // holder.alarmView.setVisibility(View.VISIBLE);
                         int h = Integer.parseInt(temp[0]);
                         int m = Integer.parseInt(temp[1]);
                         i.putExtra(AlarmClock.EXTRA_HOUR, h);

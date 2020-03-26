@@ -53,8 +53,8 @@
         android:layout_gravity="start"
         app:background="@color/black"
         android:backgroundTint="@color/black"
-        app:itemTextColor="@color/white"
-        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/seleector_drawer"
+        app:itemIconTint="@color/seleector_drawer"
         app:menu="@menu/drawermenu"
 
 
