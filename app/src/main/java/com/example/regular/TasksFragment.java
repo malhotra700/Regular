@@ -1,6 +1,7 @@
 package com.example.regular;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -263,7 +264,7 @@ public class TasksFragment extends Fragment {
                                 noteText.getText().toString());
                         try {
                             mActivity.startActivity(whatsappIntent);
-                        } catch (android.content.ActivityNotFoundException ex) {
+                        } catch (ActivityNotFoundException ex) {
                             Toast.makeText(mContext,"WhatsApp is not installed!",Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -272,16 +273,11 @@ public class TasksFragment extends Fragment {
                 shareToGmailBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW)
-                                .setType("plain/text")
-                                .setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail")
-                                .putExtra(Intent.EXTRA_SUBJECT, noteHeading.getText().toString())
-                                .putExtra(Intent.EXTRA_TEXT, noteText.getText().toString());
-                        try {
-                            mActivity.startActivity(intent);
-                        } catch (android.content.ActivityNotFoundException ex) {
-                            Toast.makeText(mContext,"Gmail is not installed!",Toast.LENGTH_SHORT).show();
-                        }
+                        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                "mailto", "", null));
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, noteHeading.getText().toString());
+                        emailIntent.putExtra(Intent.EXTRA_TEXT,noteText.getText().toString());
+                        startActivity(Intent.createChooser(emailIntent, null));
                     }
                 });
                 saveNotesButton=mdialog.findViewById(R.id.add_task_btn);

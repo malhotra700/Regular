@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
@@ -218,7 +219,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                 shareToGmailBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                "mailto", "", null));
+                        emailIntent.putExtra(Intent.EXTRA_SUBJECT, noteHeading.getText().toString());
+                        emailIntent.putExtra(Intent.EXTRA_TEXT,noteText.getText().toString());
+                        context.startActivity(Intent.createChooser(emailIntent, null));
                     }
                 });
                 saveNotesButton=mdialog.findViewById(R.id.add_task_btn);
