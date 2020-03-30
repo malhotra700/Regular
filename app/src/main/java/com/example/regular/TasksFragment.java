@@ -73,7 +73,6 @@ public class TasksFragment extends Fragment {
     EditText noteHeading,noteText;
     Button saveNotesButton,addBulletBtn;
     ImageButton shareToWhatsappBtn,shareToGmailBtn;
-    LinearLayout extraBtns;
     ImageButton sttBtn;
     SpeechRecognizer mspeechRecog;
     Intent mSpeechRecogInt;
@@ -147,6 +146,7 @@ public class TasksFragment extends Fragment {
         mdialog = new Dialog(getActivity());
         mdialog.setContentView(R.layout.popup_note);
         mdialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+        mdialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
         mdialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         floatingActionButton=view.findViewById(R.id.fab_task);
@@ -154,19 +154,21 @@ public class TasksFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 noteHeading=mdialog.findViewById(R.id.task_heading);
-                extraBtns=mdialog.findViewById(R.id.extra_btns);
                 noteText=mdialog.findViewById(R.id.task_text);
+                addBulletBtn=mdialog.findViewById(R.id.task_bullet_btn);
+                sttBtn=mdialog.findViewById(R.id.task_stt_btn);
                 noteText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         if (hasFocus) {
-                            extraBtns.setVisibility(View.VISIBLE);
+                            addBulletBtn.setVisibility(View.VISIBLE);
+                            sttBtn.setVisibility(View.VISIBLE);
                         } else {
-                            extraBtns.setVisibility(View.GONE);
+                            addBulletBtn.setVisibility(View.GONE);
+                            sttBtn.setVisibility(View.GONE);
                         }
                     }
                 });
-                addBulletBtn=mdialog.findViewById(R.id.task_bullet_btn);
                 addBulletBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -235,7 +237,6 @@ public class TasksFragment extends Fragment {
 
                     }
                 });
-                sttBtn=mdialog.findViewById(R.id.task_stt_btn);
                 sttBtn.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {

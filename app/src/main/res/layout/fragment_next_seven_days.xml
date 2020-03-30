@@ -134,6 +134,8 @@
         android:id="@+id/check_busy_btn"
         android:textColor="@color/white"
         android:layout_marginTop="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:background="@drawable/shape_rounded_rectangle"></Button>
     <TextView
         android:layout_width="match_parent"

@@ -77,6 +77,7 @@ public class HomeActivity extends AppCompatActivity {
         mdialog = new Dialog(this);
         mdialog.setContentView(R.layout.popup_doodle);
         mdialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+        mdialog.getWindow().setWindowAnimations(R.style.DialogAnimation1);
         mdialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         final SharedPreferences.Editor editor = preferences.edit();
@@ -146,7 +147,7 @@ public class HomeActivity extends AppCompatActivity {
 
         String curr=getIntent().getExtras().getString("currentUser");
         Log.i("checkUser1",curr);
-        headeruserTV.setText("Hey! "+curr.split(" ")[0]);
+        headeruserTV.setText(curr.split(" ")[0]);
 
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Calendar cal = Calendar.getInstance();
@@ -192,6 +193,9 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             case R.id.tasks_nav:
                 fragmentClass=TasksFragment.class;
+                break;
+            case R.id.health_nav:
+                fragmentClass=HealthFragment.class;
                 break;
             default:
                 fragmentClass=EventsFragment.class;

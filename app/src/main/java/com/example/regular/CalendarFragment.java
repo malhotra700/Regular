@@ -359,6 +359,7 @@ public class CalendarFragment extends Fragment {
         mdialog = new Dialog(getActivity());
         mdialog.setContentView(R.layout.popup_add);
         mdialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+        mdialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
         mdialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         Calendar startDate = Calendar.getInstance();

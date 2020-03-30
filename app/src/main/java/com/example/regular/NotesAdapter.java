@@ -71,6 +71,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         mdialog = new Dialog(mActivity);
         mdialog.setContentView(R.layout.popup_note);
         mdialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+        mdialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
         mdialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
         database= FirebaseDatabase.getInstance();
@@ -102,20 +103,22 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                 noteHeading=mdialog.findViewById(R.id.task_heading);
                 noteHeading.setText(notesAda.get(position).getHeading());
                 noteText=mdialog.findViewById(R.id.task_text);
-                extraBtns=mdialog.findViewById(R.id.extra_btns);
+                addBulletBtn=mdialog.findViewById(R.id.task_bullet_btn);
+                sttBtn=mdialog.findViewById(R.id.task_stt_btn);
                 noteText=mdialog.findViewById(R.id.task_text);
                 noteText.setText(notesAda.get(position).getText());
                 noteText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
                     public void onFocusChange(View v, boolean hasFocus) {
                         if (hasFocus) {
-                            extraBtns.setVisibility(View.VISIBLE);
+                            addBulletBtn.setVisibility(View.VISIBLE);
+                            sttBtn.setVisibility(View.VISIBLE);
                         } else {
-                            extraBtns.setVisibility(View.GONE);
+                            addBulletBtn.setVisibility(View.GONE);
+                            sttBtn.setVisibility(View.GONE);
                         }
                     }
                 });
-                addBulletBtn=mdialog.findViewById(R.id.task_bullet_btn);
                 addBulletBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -181,7 +184,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
                     }
                 });
-                sttBtn=mdialog.findViewById(R.id.task_stt_btn);
                 sttBtn.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {

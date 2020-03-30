@@ -132,7 +132,7 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
         if(selected.equals(prefs.getString("day2",""))) {
             if(!eventsAda.get(position).getStartEventTime().split(":")[0].isEmpty() && (Integer.parseInt(eventsAda.get(position).getStartEventTime().split(":")[0])*60 + Integer.parseInt(eventsAda.get(position).getStartEventTime().split(":")[1]))<temp)
                 holder.alarmView.setVisibility(View.VISIBLE);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.alarmView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
@@ -152,7 +152,7 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
         if(selected.equals(prefs.getString("day1",""))) {
             if(!eventsAda.get(position).getStartEventTime().split(":")[0].isEmpty() && (Integer.parseInt(eventsAda.get(position).getStartEventTime().split(":")[0])*60 + Integer.parseInt(eventsAda.get(position).getStartEventTime().split(":")[1]))>temp)
                 holder.alarmView.setVisibility(View.VISIBLE);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.alarmView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);

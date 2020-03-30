@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".BreathingExerciseFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/choose_technique_btn"
+        android:layout_alignParentTop="true"
+        android:tint="@color/grey"
+        android:background="@color/black"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_settings_black_24dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_margin="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/choose_technique_btn"
+        android:text="..."
+        android:gravity="center"
+        android:id="@+id/breathing_tv"
+        android:padding="8dp"
+        android:background="@drawable/shape_rectangle_border" />
+    <com.example.regular.Chronometer
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/stopwatch_time"
+        android:textColor="@color/white"
+        android:elevation="5dp"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:textSize="40sp"
+        android:layout_centerInParent="true"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:padding="20dp"
+        />
+    <View
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/breathe_view"
+        android:background="@drawable/shape_circle_border"
+        android:backgroundTint="@color/white"
+        android:alpha=".2"/>
+    <View
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/big_breathe_view"
+        android:visibility="gone"
+        android:background="@drawable/shape_circle_border"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/stop_btn"
+        android:textColor="@color/white"
+        android:layout_margin="8dp"
+        android:background="@drawable/round_rec_getin"
+        android:backgroundTint="@color/cherry_tomato" />
+
+
+
+</RelativeLayout>

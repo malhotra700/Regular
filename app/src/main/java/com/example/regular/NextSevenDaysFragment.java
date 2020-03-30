@@ -401,12 +401,6 @@ public class NextSevenDaysFragment extends Fragment {
         return view;
     }
 
-    public void setHex(TextView tv, int s){
-        if(s>0){
-            tv.setBackgroundColor(this.getResources().getColor(R.color.cherry_tomato));
-            Log.i("Dateee",Integer.toString(s)+"abcd");
-        }
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

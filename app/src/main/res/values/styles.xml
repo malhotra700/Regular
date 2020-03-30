@@ -12,7 +12,7 @@
     </style>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="TimePickerTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/dark_cherry1</item>
+        <item name="colorAccent">@color/lightBlack</item>
         <item name="android:textColorPrimary">@color/cherry_tomato</item>
         <item name="android:textColorSecondary">@color/lightBlack</item>
     </style>
@@ -25,5 +25,13 @@
         <item name="colorControlActivated">@color/cherry_tomato</item>
         <item name="colorSwitchThumbNormal">@color/dark_cherry1</item>
         <item name="android:colorForeground">@color/dark_cherry2</item>
+    </style>
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up_animation</item>
+        <item name="android:windowExitAnimation">@anim/slide_down_animation</item>
+    </style>
+    <style name="DialogAnimation1">
+        <item name="android:windowEnterAnimation">@anim/slide_left_animation</item>
+        <item name="android:windowExitAnimation">@anim/slide_right_animation</item>
     </style>
 </resources>

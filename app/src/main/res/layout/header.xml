@@ -13,28 +13,39 @@
         android:layout_marginTop="4dp"
         android:src="@drawable/pic"
         android:id="@+id/user_image"
-        app:civ_border_width="0dp"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@android:color/darker_gray"
         app:civ_shadow="true"
         app:civ_shadow_radius="3"
         tools:ignore="InvalidId" />
-
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hey! User"
-        android:textSize="18sp"
-        android:textColor="@color/cherry_tomato"
-        android:textStyle="bold"
         android:layout_marginTop="5dp"
-        android:id="@+id/header_user_tv">
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hey! "
+            android:textSize="18sp"
+            android:textColor="@color/cherry_tomato"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User"
+            android:textSize="18sp"
+            android:textColor="@android:color/darker_gray"
+            android:textStyle="bold"
+            android:id="@+id/header_user_tv"/>
+    </LinearLayout>
 
-    </TextView>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="It's time to be REGULAR"
         android:textSize="14sp"
-        android:textColor="@color/cherry_tomato"
+        android:textColor="@android:color/darker_gray"
         android:textStyle="bold"
         android:layout_marginTop="5dp"
         >

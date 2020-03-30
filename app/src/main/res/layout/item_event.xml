@@ -2,9 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
     android:padding="2dp"
-    android:background="@drawable/shape_rounded_rectangle">
+    android:background="@drawable/round_rec_getin"
+    android:backgroundTint="@color/lightBlack">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +35,7 @@
             android:layout_width="148dp"
             android:layout_height="wrap_content"
             android:text="Heading"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:id="@+id/item_heading"
             android:layout_marginLeft="10dp"
             android:textColor="@color/white"
@@ -45,22 +49,25 @@
             android:layout_marginLeft="4dp"
             android:text="02:30"
             android:textColor="@color/white"
-            android:textSize="14sp"></TextView>
+            android:alpha=".6"
+            android:textSize="12sp"></TextView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-"
             android:textColor="@color/white"
             android:layout_marginLeft="4dp"
-            android:textSize="14sp"
+            android:textSize="12sp"
+            android:alpha=".6"
             android:layout_centerVertical="true"
             android:id="@+id/item_hyphen"></TextView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="04:30"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/white"
+            android:alpha=".6"
             android:layout_marginLeft="4dp"
             android:id="@+id/item_end_time"
             android:layout_centerVertical="true"></TextView>
