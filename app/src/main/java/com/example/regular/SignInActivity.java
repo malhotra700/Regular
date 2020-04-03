@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
@@ -37,6 +43,8 @@ public class SignInActivity extends AppCompatActivity {
 
     SignInButton signInButton;
     FirebaseAuth firebaseAuth;
+
+
     private final static int RC_SIGN_IN=2;
     GoogleSignInClient mGoogleSignInClient;
     private final static int PERMISSION_ALL = 1;
@@ -82,6 +90,8 @@ public class SignInActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser()!=null){
+
+
                     Intent start=new Intent(SignInActivity.this,HomeActivity.class);
                     String s=Objects.requireNonNull(firebaseAuth.getCurrentUser().getDisplayName());
                     Log.i("checkUser",s);

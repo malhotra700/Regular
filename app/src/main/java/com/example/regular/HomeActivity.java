@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -33,8 +34,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.squareup.picasso.Picasso;
 
@@ -49,16 +53,17 @@ public class HomeActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
-    DatabaseReference ref;
+    DatabaseReference ref,readRef;
     FirebaseDatabase database;
     GoogleSignInAccount acct;
     TextView headeruserTV;
     CircularImageView circularImageView;
-    ImageButton toolbarYourNoteBtn;
+    ImageButton toolbarYourNoteBtn,toolbarQuoteBtn;
     SignaturePad signaturePad;
-    Button clearPadBtn;
+    Button clearPadBtn,saveQuoteBtn;
+    EditText quote;
     Uri imgPath=Uri.parse("android.resource://com.example.regular/"+R.drawable.pic);
-    Dialog mdialog;
+    Dialog mdialog,qdialog;
     SharedPreferences preferences;
 
     @Override
@@ -74,13 +79,77 @@ public class HomeActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_home);
 
+        preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = preferences.edit();
+
+        if(!preferences.getBoolean("Done",true)){
+        database= FirebaseDatabase.getInstance();
+        acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
+        readRef=database.getReference("Progress");
+        readRef.child(acct.getId()+"DailyStreak").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    editor.putInt("DailyStreak", dataSnapshot.getValue(Integer.class));
+                    editor.apply();
+                }catch (NullPointerException e) {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        readRef.child(acct.getId()+"AppVisits").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    editor.putInt("AppVisits", dataSnapshot.getValue(Integer.class));
+                    Log.i("ffffff",dataSnapshot.getValue(Integer.class)+"");
+                    editor.apply();
+                }catch (NullPointerException e) {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        readRef.child(acct.getId()+"MinutesMeditating").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    editor.putInt("MinutesMeditating", dataSnapshot.getValue(Integer.class));
+                    editor.apply();
+                }catch (NullPointerException e) {
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        }
+
         mdialog = new Dialog(this);
         mdialog.setContentView(R.layout.popup_doodle);
         mdialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
         mdialog.getWindow().setWindowAnimations(R.style.DialogAnimation1);
         mdialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        qdialog = new Dialog(this);
+        qdialog.setContentView(R.layout.popup_quote);
+        qdialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+        qdialog.getWindow().setWindowAnimations(R.style.DialogAnimation1);
+        qdialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        final SharedPreferences.Editor editor = preferences.edit();
+        //final SharedPreferences.Editor editor = preferences.edit();
 
         toolbarYourNoteBtn=findViewById(R.id.toolbar_pad_btn);
         toolbarYourNoteBtn.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +196,29 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
                 mdialog.show();
+            }
+        });
+
+        toolbarQuoteBtn=findViewById(R.id.toolbar_quote_btn);
+        toolbarQuoteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quote=qdialog.findViewById(R.id.quote_edit);
+                String s=preferences.getString("quoteFav","");
+                //Log.i("encodedFetch",s);
+                if(!s.isEmpty()){
+                    quote.setText(s);
+                }
+                saveQuoteBtn=qdialog.findViewById(R.id.save_quote_btn);
+                saveQuoteBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        editor.putString("quoteFav",quote.getText().toString());
+                        editor.apply();
+                        qdialog.dismiss();
+                    }
+                });
+                qdialog.show();
             }
         });
 
@@ -196,6 +288,9 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             case R.id.health_nav:
                 fragmentClass=HealthFragment.class;
+                break;
+            case R.id.progress_nav:
+                fragmentClass=ProgressFragment.class;
                 break;
             default:
                 fragmentClass=EventsFragment.class;

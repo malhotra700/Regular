@@ -135,6 +135,18 @@
             android:textStyle="bold"
             android:theme="@style/SCBSwitch"
             android:textSize="18sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="* Close your eyes, take a deep breath and concentrate in between your eyes for a better experience."
+            android:background="@color/black"
+            android:padding="2dp"
+            android:layout_margin="8dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            >
+        </TextView>
 
     </LinearLayout>
     <Button

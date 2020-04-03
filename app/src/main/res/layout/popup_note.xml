@@ -7,10 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="8dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-
+        android:layout_marginBottom="8dp"
         android:id="@+id/pop_task_card_view"
         android:layout_above="@id/key_layout">
         <ScrollView
@@ -21,13 +18,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="8dp"
                 >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/round_rec_getin"
+                android:backgroundTint="@color/lightBlack">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Heading"
-                    android:background="@color/black"
                     android:padding="2dp"
                     android:textColor="@color/white"
                     android:textSize="18sp"
@@ -41,23 +46,29 @@
                     android:id="@+id/task_heading"
                     android:inputType="textCapWords"
                     android:gravity="start"
-                    android:background="@color/black"
+                    android:background="@android:color/transparent"
                     android:textColor="@color/cherry_tomato"
                     android:textCursorDrawable="@drawable/color_cursor"
-                    android:textColorHint="@color/lightBlack"
+                    android:textColorHint="@color/lighterBlack"
                     android:padding="2dp"
                     android:textSize="24sp"
                     android:hint="Untitled Heading">
                 </EditText>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/lightBlack"></View>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/round_rec_getin"
+                android:backgroundTint="@color/lightBlack">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Note"
-                    android:background="@color/black"
                     android:padding="2dp"
                     android:textColor="@color/white"
                     android:textSize="18sp"
@@ -73,25 +84,27 @@
                     android:minLines="5"
                     android:maxLines="100"
                     android:gravity="start"
-                    android:background="@color/black"
+                    android:background="@android:color/transparent"
                     android:textCursorDrawable="@drawable/color_cursor"
-                    android:textColor="@color/white"
+                    android:textColor="@android:color/white"
                     android:alpha=".8"
-                    android:textColorHint="@color/lightBlack"
+                    android:textColorHint="@color/lighterBlack"
                     android:padding="2dp"
                     android:textSize="18sp"
                     android:hint="Write your note here.">
                 </EditText>
+            </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/lightBlack"></View>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="16dp">
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/round_rec_getin"
+                    android:backgroundTint="@color/lightBlack">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -103,8 +116,8 @@
                 <ImageButton
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:background="@color/black"
                     android:src="@drawable/ic_whatsapp"
+                    android:background="@color/lightBlack"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
                     android:tint="@color/white"
@@ -114,7 +127,7 @@
                     <ImageButton
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:background="@color/black"
+                        android:background="@color/lightBlack"
                         android:src="@drawable/ic_mail"
                         android:tint="@color/white"
                         android:padding="8dp"
@@ -135,13 +148,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/round_rec_getin"
-            android:layout_margin="5dp"
             android:backgroundTint="@color/black">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_margin="4dp"
             android:visibility="visible">
             <Button
                 android:layout_width="wrap_content"

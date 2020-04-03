@@ -2,36 +2,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="420dp">
+    android:layout_height="200dp">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:background="@color/black"
         android:layout_alignParentTop="true"
-        android:text="Scribble To Remember"
+        android:text="Favourite Quote"
         android:gravity="center"
-        android:id="@+id/doodleTV">
+        android:id="@+id/quoteTV">
     </TextView>
-    <com.github.gcacace.signaturepad.views.SignaturePad
+    <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/black"
-        android:layout_below="@+id/doodleTV"
-        android:layout_above="@+id/clear_doodle_btn"
-        app:penColor="@color/cherry_tomato"
-        android:id="@+id/doodle_pad">
-    </com.github.gcacace.signaturepad.views.SignaturePad>
+        android:inputType="textMultiLine|textCapSentences"
+        android:gravity="start"
+        android:hint="Write your favourite quote to stay motivated."
+        android:textCursorDrawable="@drawable/color_cursor"
+        android:textColor="@color/white"
+        android:textColorHint="@color/lighterBlack"
+        android:padding="8dp"
+        android:textSize="18sp"
+        android:layout_below="@+id/quoteTV"
+        android:layout_above="@+id/save_quote_btn"
+        android:id="@+id/quote_edit"/>
+
     <Button
         android:layout_width="match_parent"
-        android:layout_height="51dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="Clear Pad"
+        android:text="Save Quote"
         android:background="@color/cherry_tomato"
         android:textSize="18sp"
         android:textColor="#ffffff"
         android:lineSpacingExtra="14sp"
-        android:id="@+id/clear_doodle_btn">
+        android:id="@+id/save_quote_btn">
     </Button>
 
 </RelativeLayout>

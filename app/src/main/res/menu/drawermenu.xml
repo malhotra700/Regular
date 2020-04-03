@@ -3,6 +3,7 @@
     <item android:id="@+id/events_nav" android:title="Events" android:icon="@drawable/ic_meet" android:checkable="true" android:checked="true"/>
     <item android:id="@+id/tasks_nav" android:title="Notes" android:icon="@drawable/ic_pencil" android:checkable="true"/>
     <item android:id="@+id/health_nav" android:title="Relax" android:icon="@drawable/ic_health" android:checkable="true"/>
+    <item android:id="@+id/progress_nav" android:title="Progress" android:icon="@drawable/ic_progress" android:checkable="true"/>
     <item android:id="@+id/logout" android:title="Logout" android:icon="@drawable/ic_logout" android:checkable="true"/>
 
 </menu>

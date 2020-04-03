@@ -27,9 +27,36 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = preferences.edit();
         if(preferences.getString("padBitmap","").isEmpty())
             editor.putString("padBitmap","");
+        //editor.putInt("SelectedDatePosition",0);
 
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Calendar cal = Calendar.getInstance();
+
+        if(!preferences.getString("day1","").isEmpty()) {
+            if(!preferences.getString("day1","").equals(dateFormat.format(cal.getTime()))) {
+                int i=preferences.getInt("AppVisits",0)+1;
+                editor.putInt("AppVisits", i);
+            }
+            if(preferences.getString("day1","").equals(dateFormat.format(cal.getTime()))) {
+
+            }
+            else {
+                cal.add(Calendar.DATE, -1);
+                if (preferences.getString("day1", "").equals(dateFormat.format(cal.getTime()))) {
+                    int i = preferences.getInt("DailyStreak", 0) + 1;
+                    editor.putInt("DailyStreak", i);
+                } else
+                    editor.putInt("DailyStreak", 1);
+            }
+            editor.putBoolean("Done",true);
+        }
+        else {
+            editor.putInt("AppVisits", 1);
+            editor.putInt("DailyStreak", 1);
+            editor.putBoolean("Done",false);
+        }
+
+        cal = Calendar.getInstance();
         editor.putString("day1", dateFormat.format(cal.getTime()));
 
         cal.add(Calendar.DATE, 1);

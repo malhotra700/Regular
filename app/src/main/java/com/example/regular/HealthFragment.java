@@ -87,8 +87,7 @@ public class HealthFragment extends Fragment {
 
         Adapter adapter = new Adapter(getChildFragmentManager());
         adapter.addFragment(new BreathingExerciseFragment(), "Breathing Exercise");
-        adapter.addFragment(new TasksFragment(), "Meditation");
-        adapter.addFragment(new TasksFragment(),"Drink Water");
+        adapter.addFragment(new TimePassFragment(), "Time Pass");
         viewPager.setAdapter(adapter);
 
 

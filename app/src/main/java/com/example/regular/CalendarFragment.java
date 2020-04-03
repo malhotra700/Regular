@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -80,6 +81,7 @@ public class CalendarFragment extends Fragment {
     Dialog mdialog;
     FloatingActionButton floatingActionButton;
     EditText eventHeading;
+    TextView noEventsAdded;
     DatePicker eventDatePicker;
     TimePicker startTimePicker,endTimePicker;
     Events events;
@@ -95,6 +97,7 @@ public class CalendarFragment extends Fragment {
     String selectedDate;
     int Checker;
     SharedPreferences.Editor editor;
+    ShimmerFrameLayout mShimmerViewContainer;
     private Context mContext;
     private AppCompatActivity mActivity;
     private static final String[] labels = {"item 1", "item 2", "item 3"};
@@ -136,6 +139,19 @@ public class CalendarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_calendar, container, false);
 
+        final Calendar startDate = Calendar.getInstance();
+        startDate.add(Calendar.MONTH, 0);
+        final Calendar endDate = Calendar.getInstance();
+        endDate.add(Calendar.MONTH, 12);
+        horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.calendarView)
+                .range(startDate, endDate)
+                .datesNumberOnScreen(5)
+                .defaultSelectedDate(Calendar.getInstance())
+                .build();
+        mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmer();
+        horizontalCalendar.setRange(startDate,startDate);
+
         preferences = mActivity.getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         editor = preferences.edit();
         //Log.i("Dateeecf",preferences.getString("day1",""));
@@ -166,6 +182,8 @@ public class CalendarFragment extends Fragment {
         ref=database.getReference("Events");
         events=new Events();
 
+        noEventsAdded=view.findViewById(R.id.no_events);
+
         recyclerView=(RecyclerView)view.findViewById(R.id.recycler_events);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         list=new ArrayList<Events>();
@@ -179,19 +197,18 @@ public class CalendarFragment extends Fragment {
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                     Events p=dataSnapshot1.getValue(Events.class);
                     list.add(p);
-                    /*if(selectedDate.equals(preferences.getString("day1",""))){
-                        int temp=1;
-                        if (!p.getEndEventTime().isEmpty()) {
-                            String[] e = p.getEndEventTime().split(":");
-                            String[] s = p.getStartEventTime().split(":");
-                            temp = (Integer.parseInt(e[0]) * 60 + Integer.parseInt(e[1])) - (Integer.parseInt(s[0]) * 60 + Integer.parseInt(s[1]));
-                            //Log.i("Dateeecf",String.valueOf(temp*1.0/60));
-                        }
-                        factor+=temp*1.0/60;
-                    }
-                 */
+
                 }
+                if(list.size()==0)
+                    noEventsAdded.setVisibility(View.VISIBLE);
+                else
+                    noEventsAdded.setVisibility(View.GONE);
                 recyclerView.setAdapter(new ProgrammingAdapter(getContext(),list,selectedDate,mActivity));
+                mShimmerViewContainer.setVisibility(View.GONE);
+                horizontalCalendar.setRange(startDate,endDate);
+                if(preferences.getInt("SelectedDatePosition",-1)!=-1)
+                    horizontalCalendar.centerCalendarToPosition(preferences.getInt("SelectedDatePosition",-1));
+                horizontalCalendar.refresh();
                 refreshRecycler(recyclerView);
             }
 
@@ -345,6 +362,8 @@ public class CalendarFragment extends Fragment {
 
                         ref.child(acct.getId()).child(formattedDate).child(acct.getId()+formattedTime+formattedTimee).setValue(events);
                         Toast.makeText(mContext,"Event Added",Toast.LENGTH_LONG).show();
+                        editor.putInt("SelectedDatePosition",horizontalCalendar.getSelectedDatePosition());
+                        editor.apply();
                         mdialog.dismiss();
                         mActivity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CalendarFragment()).commit();
 
@@ -362,20 +381,13 @@ public class CalendarFragment extends Fragment {
         mdialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
         mdialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-        Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.MONTH, 0);
 
         /* ends after 1 month from now */
-        Calendar endDate = Calendar.getInstance();
-        endDate.add(Calendar.MONTH, 12);
-        horizontalCalendar = new HorizontalCalendar.Builder(view, R.id.calendarView)
-                .range(startDate, endDate)
-                .datesNumberOnScreen(5)
-                .defaultSelectedDate(Calendar.getInstance())
-                .build();
+
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
+                mShimmerViewContainer.setVisibility(View.VISIBLE);
                 int days=date.get(Calendar.DAY_OF_MONTH);
                 String dayss = "00";
                 if(days<10){
@@ -451,8 +463,13 @@ public class CalendarFragment extends Fragment {
                          */
 
                         }
+                        if(list.size()==0)
+                            noEventsAdded.setVisibility(View.VISIBLE);
+                        else
+                            noEventsAdded.setVisibility(View.GONE);
                         recyclerView.setAdapter(new ProgrammingAdapter(getContext(),list,selectedDate,mActivity));
                         //Log.i("jjjjbbbb","reached2");
+                        mShimmerViewContainer.setVisibility(View.GONE);
                         refreshRecycler(recyclerView);
                     }
 
@@ -496,6 +513,12 @@ public class CalendarFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        editor.putInt("SelectedDatePosition",horizontalCalendar.getSelectedDatePosition());
+        editor.apply();
     }
 
 

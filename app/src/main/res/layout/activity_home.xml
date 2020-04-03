@@ -23,6 +23,7 @@
                 android:background="@color/black"
                 app:titleTextColor="@color/white"
                 android:backgroundTint="@color/black">
+
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -32,6 +33,16 @@
                     android:layout_marginRight="16dp"
                     android:layout_gravity="right"
                     android:id="@+id/toolbar_pad_btn"
+                    />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_quote"
+                    android:tint="@color/white"
+                    android:background="@color/black"
+                    android:layout_marginRight="16dp"
+                    android:layout_gravity="right"
+                    android:id="@+id/toolbar_quote_btn"
                     />
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>

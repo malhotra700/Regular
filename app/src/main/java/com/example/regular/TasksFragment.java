@@ -31,6 +31,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -77,6 +78,7 @@ public class TasksFragment extends Fragment {
     SpeechRecognizer mspeechRecog;
     Intent mSpeechRecogInt;
     Dialog mdialog;
+    ShimmerFrameLayout mShimmerViewContainer;
     GoogleSignInAccount acct;
 
     private CalendarFragment.OnFragmentInteractionListener mListener;
@@ -117,6 +119,10 @@ public class TasksFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_tasks, container, false);
+
+        mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmer();
+
         recyclerView=(RecyclerView)view.findViewById(R.id.tasks_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         list=new ArrayList<Notes>();
@@ -134,6 +140,7 @@ public class TasksFragment extends Fragment {
                 }
                 //Log.i("taskcheck",list.toString());
                 recyclerView.setAdapter(new NotesAdapter(getContext(),list,mActivity));
+                mShimmerViewContainer.setVisibility(View.GONE);
                 refreshRecycler(recyclerView);
             }
 

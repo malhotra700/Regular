@@ -30,6 +30,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -69,6 +73,10 @@ public class BreathingExerciseFragment extends Fragment {
     Dialog mdialog;
     SharedPreferences preferences;
     TextToSpeech tts;
+
+    FirebaseDatabase database;
+    DatabaseReference readRef;
+    GoogleSignInAccount acct;
 
     public BreathingExerciseFragment() {
         // Required empty public constructor
@@ -128,8 +136,16 @@ public class BreathingExerciseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 radioGroup=mdialog.findViewById(R.id.groupradio);
-                if(preferences.getInt("RadioId",-1)!=-1) {
-                    radioButton=radioGroup.findViewById(preferences.getInt("RadioId",-1));
+                String check=preferences.getString("BreathingTechnique","");
+                if(!check.isEmpty()) {
+                    if(check.equals("Early Morning"))
+                        radioButton=(RadioButton)radioGroup.findViewById(R.id.radia_id1);
+                    else if(check.equals("Deep Breathing"))
+                        radioButton=(RadioButton)radioGroup.findViewById(R.id.radia_id2);
+                    else if(check.equals("Pranayama"))
+                        radioButton=(RadioButton)radioGroup.findViewById(R.id.radia_id3);
+                    else if(check.equals("Box Breathing"))
+                        radioButton=(RadioButton)radioGroup.findViewById(R.id.radia_id4);
                     radioButton.setChecked(true);
                 }
                 breathingSwitch=mdialog.findViewById(R.id.switch_breathing);
@@ -147,7 +163,6 @@ public class BreathingExerciseFragment extends Fragment {
                         int selectedId = radioGroup.getCheckedRadioButtonId();
                         radioButton=(RadioButton)radioGroup.findViewById(selectedId);
                         editor.putString("BreathingTechnique",radioButton.getText().toString());
-                        editor.putInt("RadioId",selectedId);
                         String x=timerDuration.getText().toString();
                         if(!x.isEmpty() && !(x.charAt(0) == '0'))
                             editor.putInt("TimerDuration",Integer.parseInt(x));
@@ -219,6 +234,10 @@ public class BreathingExerciseFragment extends Fragment {
                     currentState="START";
                     breathingTV.setText(preferences.getString("BreathingTechnique",""));
                     scaleView(breatheView,1.5f,1f);
+                    String[] mm=stopwatchTV.getText().toString().split(":");
+                    int i=preferences.getInt("MinutesMeditating",0);
+                    editor.putInt("MinutesMeditating",Integer.parseInt(mm[0])+i);
+                    editor.apply();
                     stopwatchTV.stop();
                     stopwatchTV.setBase(SystemClock.elapsedRealtime());
                 }

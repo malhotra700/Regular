@@ -7,26 +7,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="8dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="4dp"
         android:id="@+id/pop_event_card_view"
         android:layout_above="@+id/add_event_btn">
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/black">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="8dp"
-            android:background="@color/black">
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_rec_getin"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:backgroundTint="@color/lightBlack"
+                android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Label"
-                android:background="@color/black"
                 android:padding="2dp"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -40,15 +46,21 @@
                 android:theme="@style/SpinnerTheme"
                 android:spinnerMode="dropdown"
                 android:entries="@array/planets_array"/>
-            <View
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/lightBlack"></View>
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_rec_getin"
+                android:backgroundTint="@color/lightBlack"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Heading"
-                android:background="@color/black"
                 android:padding="2dp"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -62,46 +74,53 @@
                 android:id="@+id/event_heading"
                 android:inputType="textCapWords"
                 android:gravity="start"
+                android:background="@android:color/transparent"
                 android:textCursorDrawable="@drawable/color_cursor"
-                android:background="@color/black"
                 android:textColor="@color/white"
-                android:textColorHint="@color/lightBlack"
+                android:textColorHint="@color/lighterBlack"
                 android:padding="2dp"
                 android:textSize="24sp"
-                android:hint="Untitled Heading">
+                android:hint=" Untitled Heading">
             </EditText>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/lightBlack"></View>
+            </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
+                android:background="@drawable/round_rec_getin"
+                android:backgroundTint="@color/lightBlack"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="vertical">
 
                 <Switch
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:shadowColor="@color/cherry_tomato"
                     android:id="@+id/switch_star"
-                    android:text="Priority"
+                    android:text="Priority "
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:layout_centerHorizontal="true"
                     android:theme="@style/SCBSwitch"
-                    android:textSize="18sp"
-                    ></Switch>
+                    android:textSize="18sp" />
             </RelativeLayout>
-            <View
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_rec_getin"
+                android:backgroundTint="@color/lightBlack"
                 android:layout_marginTop="4dp"
-                android:background="@color/lightBlack"></View>
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Event Date"
-                android:background="@color/black"
                 android:padding="2dp"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -113,23 +132,27 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/event_date"
                 android:calendarTextColor="@color/black"
+                android:datePickerMode="spinner"
+                android:calendarViewShown="false"
                 android:theme="@style/TimePickerTheme">
             </DatePicker>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/lightBlack"></View>
+            </LinearLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
+                android:background="@drawable/round_rec_getin"
+                android:backgroundTint="@color/lightBlack"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp">
 
             <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:shadowColor="@color/cherry_tomato"
                 android:id="@+id/switch_en"
-                android:text="No Time Limit"
+                android:text="No Time Limit "
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:layout_centerHorizontal="true"
@@ -137,11 +160,20 @@
                 android:textSize="18sp"
                 ></Switch>
             </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_rec_getin"
+                android:backgroundTint="@color/lightBlack"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Start Time"
-                android:background="@color/black"
                 android:padding="2dp"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -155,18 +187,23 @@
                 android:id="@+id/start_time"
                 android:calendarTextColor="@color/black"
                 android:theme="@style/TimePickerTheme"
-                android:background="@color/black"
                 android:timePickerMode="spinner">
             </TimePicker>
-            <View
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/lightBlack"></View>
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_rec_getin"
+                android:backgroundTint="@color/lightBlack"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="End Time"
-                android:background="@color/black"
                 android:padding="2dp"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -180,9 +217,10 @@
                 android:id="@+id/end_time"
                 android:calendarTextColor="@color/black"
                 android:theme="@style/TimePickerTheme"
-                android:background="@color/black"
                 android:timePickerMode="spinner">
             </TimePicker>
+            </LinearLayout>
+
 
         </LinearLayout>
         </ScrollView>
@@ -192,7 +230,8 @@
         android:layout_height="51dp"
         android:layout_alignParentBottom="true"
         android:text="ADD EVENT"
-        android:background="@color/cherry_tomato"
+        android:background="@drawable/round_rec_getin"
+        android:backgroundTint="@color/cherry_tomato"
         android:textSize="18sp"
         android:textColor="#ffffff"
         android:lineSpacingExtra="14sp"
