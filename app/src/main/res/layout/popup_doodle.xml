@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/dark_cherry1"
         android:background="@color/black"
         android:layout_alignParentTop="true"
         android:text="Scribble To Remember"
@@ -19,15 +19,17 @@
         android:background="@color/black"
         android:layout_below="@+id/doodleTV"
         android:layout_above="@+id/clear_doodle_btn"
-        app:penColor="@color/cherry_tomato"
+        app:penColor="@color/white"
         android:id="@+id/doodle_pad">
     </com.github.gcacace.signaturepad.views.SignaturePad>
     <Button
         android:layout_width="match_parent"
         android:layout_height="51dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginTop="4dp"
         android:text="Clear Pad"
-        android:background="@color/cherry_tomato"
+        android:background="@drawable/round_rec_getin"
+        android:backgroundTint="@color/dark_cherry1"
         android:textSize="18sp"
         android:textColor="#ffffff"
         android:lineSpacingExtra="14sp"

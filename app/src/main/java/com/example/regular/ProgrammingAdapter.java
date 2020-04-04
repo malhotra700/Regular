@@ -102,6 +102,9 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
         if(eventsAda.get(position).getStar())
             holder.starView.setVisibility(View.VISIBLE);
         holder.headingTV.setText(eventsAda.get(position).getHeading());
+
+        
+
         holder.startTV.setText(eventsAda.get(position).getStartEventTime());
         holder.endTV.setText(eventsAda.get(position).getEndEventTime());
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
