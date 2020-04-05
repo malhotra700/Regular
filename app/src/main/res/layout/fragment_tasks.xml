@@ -23,21 +23,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
-            <include layout="@layout/data_placeholder_layout" />
+            <include layout="@layout/notes_placeholder_layout" />
+            <include layout="@layout/notes_placeholder_layout" />
+            <include layout="@layout/notes_placeholder_layout" />
+            <include layout="@layout/notes_placeholder_layout" />
+            <include layout="@layout/notes_placeholder_layout" />
+            <include layout="@layout/notes_placeholder_layout" />
 
         </LinearLayout>
 
     </com.facebook.shimmer.ShimmerFrameLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="@color/lighterBlack"
+        android:text="No Notes Added"
+        android:textSize="18sp"
+        android:visibility="gone"
+        android:id="@+id/no_notes"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/tasks_recycler">
     </androidx.recyclerview.widget.RecyclerView>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/notes_info_btn"
+        android:tint="@color/grey"
+        android:layout_gravity="center_horizontal|bottom"
+        android:background="@android:color/transparent"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_info" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,13 +1,23 @@
 package com.example.regular;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -78,6 +88,20 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("day7", dateFormat.format(cal.getTime()));
         editor.apply();
 
+        createNotificationChannel();
+        FirebaseMessaging.getInstance().subscribeToTopic("general")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "successful";
+                        if (!task.isSuccessful()) {
+                            msg = "failed";
+                        }
+                        //Log.d(TAG, msg);
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         Handler handler=new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -87,5 +111,17 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         },2500);
+    }
+    private void createNotificationChannel(){
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.O){
+            CharSequence charSequence="Server Notifications";
+            String description="Channel for server notifications";
+            int importance= NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel=new NotificationChannel("notify1",charSequence,importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager=getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

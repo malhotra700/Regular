@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -78,7 +79,8 @@ public class CalendarFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     HorizontalCalendar horizontalCalendar;
     Spinner spinner;
-    Dialog mdialog;
+    Dialog mdialog,infoDialog;
+    ImageButton infoBtn;
     FloatingActionButton floatingActionButton;
     EditText eventHeading;
     TextView noEventsAdded;
@@ -381,6 +383,18 @@ public class CalendarFragment extends Fragment {
         mdialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
         mdialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
+        infoDialog = new Dialog(getActivity());
+        infoDialog.setContentView(R.layout.popup_event_info);
+        infoDialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+        infoDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+        infoDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        infoBtn=view.findViewById(R.id.events_info_btn);
+        infoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                infoDialog.show();
+            }
+        });
 
         /* ends after 1 month from now */
 

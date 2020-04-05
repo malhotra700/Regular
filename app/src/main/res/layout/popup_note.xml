@@ -84,6 +84,7 @@
                     android:minLines="10"
                     android:maxLines="100"
                     android:gravity="start"
+                    android:bufferType="spannable"
                     android:background="@android:color/transparent"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:textColor="@android:color/white"
@@ -166,17 +167,7 @@
                 android:lineSpacingExtra="14sp"
                 android:id="@+id/add_task_btn">
             </Button>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/shape_rounded_rectangle"
-                android:backgroundTint="@color/dark_cherry1"
-                android:text=" Add Bullet "
-                android:textColor="@color/white"
-                android:padding="4dp"
-                android:layout_marginLeft="4dp"
-                android:visibility="gone"
-                android:id="@+id/task_bullet_btn"/>
+
             <ImageButton
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -189,6 +180,39 @@
                 android:padding="4dp"
                 android:visibility="gone"
                 android:id="@+id/task_stt_btn"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_rounded_rectangle"
+                android:backgroundTint="@color/dark_cherry1"
+                android:text=" Add Bullet "
+                android:textColor="@color/white"
+                android:padding="4dp"
+                android:layout_marginLeft="4dp"
+                android:visibility="gone"
+                android:id="@+id/task_bullet_btn"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_rounded_rectangle"
+                android:backgroundTint="@color/dark_cherry1"
+                android:text=" Done "
+                android:textColor="@color/white"
+                android:padding="4dp"
+                android:layout_marginLeft="4dp"
+                android:visibility="gone"
+                android:id="@+id/task_done_btn"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_rounded_rectangle"
+                android:backgroundTint="@color/dark_cherry1"
+                android:text=" Un-Done "
+                android:textColor="@color/white"
+                android:padding="4dp"
+                android:layout_marginLeft="4dp"
+                android:visibility="gone"
+                android:id="@+id/task_undone_btn"/>
 
         </LinearLayout>
         </HorizontalScrollView>

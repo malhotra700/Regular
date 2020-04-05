@@ -60,8 +60,19 @@
         android:id="@+id/recycler_events"
         android:background="@color/black"
         >
+
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/events_info_btn"
+        android:tint="@color/grey"
+        android:layout_gravity="center_horizontal|bottom"
+        android:background="@android:color/transparent"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_info" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
@@ -74,7 +85,6 @@
         android:outlineSpotShadowColor="@color/cherry_tomato"
         app:borderWidth="0dp"
         android:tint="@color/black"
-        android:id="@+id/fab_add"
-        ></com.google.android.material.floatingactionbutton.FloatingActionButton>
+        android:id="@+id/fab_add" />
 
 </FrameLayout>

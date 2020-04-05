@@ -10,12 +10,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -69,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        mAuth .addAuthStateListener(mAuthListener);
     }
 
     @Override
@@ -81,6 +86,18 @@ public class HomeActivity extends AppCompatActivity {
 
         preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         final SharedPreferences.Editor editor = preferences.edit();
+
+        createNotificationChannel();
+        Intent myIntent = new Intent(this , NotifyService.class);
+        //myIntent.setAction("MY_NOTIFICATION_MESSAGE");
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 100, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,16);
+        calendar.set(Calendar.MINUTE,35);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY , pendingIntent);
 
         if(!preferences.getBoolean("Done",true)){
         database= FirebaseDatabase.getInstance();
@@ -322,6 +339,19 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+    private void createNotificationChannel(){
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.O){
+            CharSequence charSequence="Notifications";
+            String description="Channel for notifications";
+            int importance= NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel=new NotificationChannel("notify",charSequence,importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager=getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

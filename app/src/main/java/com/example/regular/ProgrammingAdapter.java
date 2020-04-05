@@ -103,8 +103,6 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
             holder.starView.setVisibility(View.VISIBLE);
         holder.headingTV.setText(eventsAda.get(position).getHeading());
 
-        
-
         holder.startTV.setText(eventsAda.get(position).getStartEventTime());
         holder.endTV.setText(eventsAda.get(position).getEndEventTime());
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -112,9 +110,9 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
             public boolean onLongClick(View v) {
                 Log.i("position",eventsAda.get(position).getHeading());
                 new AlertDialog.Builder(context)
-                        .setTitle("Title")
+                        .setTitle("Delete Event")
                         .setMessage("Do you really want to delete this event?")
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setIcon(R.drawable.ic_deadline)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {

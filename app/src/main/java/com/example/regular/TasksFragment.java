@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -29,6 +35,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -71,13 +78,14 @@ public class TasksFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference readRef;
     Notes notes;
+    TextView noNotesAdded;
     EditText noteHeading,noteText;
-    Button saveNotesButton,addBulletBtn;
-    ImageButton shareToWhatsappBtn,shareToGmailBtn;
+    Button saveNotesButton,addBulletBtn,doneBtn,undoneBtn;
+    ImageButton shareToWhatsappBtn,shareToGmailBtn,notesInfoBtn;
     ImageButton sttBtn;
     SpeechRecognizer mspeechRecog;
     Intent mSpeechRecogInt;
-    Dialog mdialog;
+    Dialog mdialog,notesInfoDialog;
     ShimmerFrameLayout mShimmerViewContainer;
     GoogleSignInAccount acct;
 
@@ -123,6 +131,7 @@ public class TasksFragment extends Fragment {
         mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container);
         mShimmerViewContainer.startShimmer();
 
+        noNotesAdded=view.findViewById(R.id.no_notes);
         recyclerView=(RecyclerView)view.findViewById(R.id.tasks_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         list=new ArrayList<Notes>();
@@ -138,6 +147,10 @@ public class TasksFragment extends Fragment {
                     Notes p = dataSnapshot1.getValue(Notes.class);
                     list.add(p);
                 }
+                if(list.size()==0)
+                    noNotesAdded.setVisibility(View.VISIBLE);
+                else
+                    noNotesAdded.setVisibility(View.GONE);
                 //Log.i("taskcheck",list.toString());
                 recyclerView.setAdapter(new NotesAdapter(getContext(),list,mActivity));
                 mShimmerViewContainer.setVisibility(View.GONE);
@@ -156,6 +169,19 @@ public class TasksFragment extends Fragment {
         mdialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
         mdialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
+        notesInfoDialog = new Dialog(getActivity());
+        notesInfoDialog.setContentView(R.layout.popup_notes_info);
+        notesInfoDialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+        notesInfoDialog.getWindow().setWindowAnimations(R.style.DialogAnimation);
+        notesInfoDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        notesInfoBtn=view.findViewById(R.id.notes_info_btn);
+        notesInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notesInfoDialog.show();
+            }
+        });
+
         floatingActionButton=view.findViewById(R.id.fab_task);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +189,8 @@ public class TasksFragment extends Fragment {
                 noteHeading=mdialog.findViewById(R.id.task_heading);
                 noteText=mdialog.findViewById(R.id.task_text);
                 addBulletBtn=mdialog.findViewById(R.id.task_bullet_btn);
+                doneBtn=mdialog.findViewById(R.id.task_done_btn);
+                undoneBtn=mdialog.findViewById(R.id.task_undone_btn);
                 sttBtn=mdialog.findViewById(R.id.task_stt_btn);
                 noteText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
@@ -170,22 +198,57 @@ public class TasksFragment extends Fragment {
                         if (hasFocus) {
                             addBulletBtn.setVisibility(View.VISIBLE);
                             sttBtn.setVisibility(View.VISIBLE);
+                            doneBtn.setVisibility(View.VISIBLE);
+                            undoneBtn.setVisibility(View.VISIBLE);
                         } else {
                             addBulletBtn.setVisibility(View.GONE);
                             sttBtn.setVisibility(View.GONE);
+                            doneBtn.setVisibility(View.GONE);
+                            undoneBtn.setVisibility(View.GONE);
                         }
                     }
                 });
                 addBulletBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //String abc=noteText.getText().toString() + " • ";
-                        //noteText.setText(abc);
-                        //noteText.setSelection(noteText.length());
                         noteText.getText().insert(noteText.getSelectionStart(),  " • ");
 
                     }
                 });
+                doneBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int i=noteText.getSelectionStart(),j;
+                        String b=noteText.getText().toString().substring(0,i);
+                        for(j=i-1;j>=0;j--){
+                            if(b.charAt(j)=='•' || b.charAt(j)=='\n')
+                                break;
+                        }
+                        Spannable spannable =  new SpannableString(noteText.getText().toString());
+                        spannable.setSpan(new StrikethroughSpan(), j+1, i, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        noteText.setText(spannable);
+                        noteText.setSelection(i);
+                        //Toast.makeText(mContext,noteText.getText(),Toast.LENGTH_LONG).show();
+                        //noteText.getText().replace(j+1,i," "+b.substring(j+1,i));
+                    }
+                });
+                undoneBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int i=noteText.getSelectionStart(),j;
+                        String b=noteText.getText().toString().substring(0,i);
+                        for(j=i-1;j>=0;j--){
+                            if(b.charAt(j)=='•' || b.charAt(j)=='\n')
+                                break;
+                        }
+                        Spannable spannable =  new SpannableString(noteText.getText());
+                        //spannable.setSpan(new ForegroundColorSpan(Color.WHITE), j+1, i, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        //Toast.makeText(mContext,noteText.getText(),Toast.LENGTH_LONG).show();
+                        noteText.setText(spannable.toString());
+                        noteText.setSelection(i);
+                    }
+                });
+
 
                 mspeechRecog = SpeechRecognizer.createSpeechRecognizer(getContext());
                 mSpeechRecogInt = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);

@@ -11,6 +11,10 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StrikethroughSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -47,7 +51,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     GoogleSignInAccount acct;
     Dialog mdialog;
     EditText noteHeading,noteText;
-    Button saveNotesButton,addBulletBtn;
+    Button saveNotesButton,addBulletBtn,doneBtn,undoneBtn;
     ImageButton shareToWhatsappBtn,shareToGmailBtn;
     LinearLayout extraBtns;
     ImageButton sttBtn;
@@ -83,9 +87,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             @Override
             public boolean onLongClick(View v) {
                 new AlertDialog.Builder(context)
-                        .setTitle("Title")
-                        .setMessage("Do you really want to delete this event?")
-                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Delete Note")
+                        .setMessage("Do you really want to delete this note?")
+                        .setIcon(R.drawable.ic_deadline)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -104,6 +108,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                 noteHeading.setText(notesAda.get(position).getHeading());
                 noteText=mdialog.findViewById(R.id.task_text);
                 addBulletBtn=mdialog.findViewById(R.id.task_bullet_btn);
+                doneBtn=mdialog.findViewById(R.id.task_done_btn);
+                undoneBtn=mdialog.findViewById(R.id.task_undone_btn);
                 sttBtn=mdialog.findViewById(R.id.task_stt_btn);
                 noteText=mdialog.findViewById(R.id.task_text);
                 noteText.setText(notesAda.get(position).getText());
@@ -113,9 +119,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                         if (hasFocus) {
                             addBulletBtn.setVisibility(View.VISIBLE);
                             sttBtn.setVisibility(View.VISIBLE);
+                            doneBtn.setVisibility(View.VISIBLE);
+                            undoneBtn.setVisibility(View.VISIBLE);
                         } else {
                             addBulletBtn.setVisibility(View.GONE);
                             sttBtn.setVisibility(View.GONE);
+                            doneBtn.setVisibility(View.GONE);
+                            undoneBtn.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -124,6 +134,39 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                     public void onClick(View v) {
                         noteText.getText().insert(noteText.getSelectionStart(),  " • ");
 
+                    }
+                });
+                doneBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int i=noteText.getSelectionStart(),j;
+                        String b=noteText.getText().toString().substring(0,i);
+                        for(j=i-1;j>=0;j--){
+                            if(b.charAt(j)=='•' || b.charAt(j)=='\n')
+                                break;
+                        }
+                        Spannable spannable =  new SpannableString(noteText.getText().toString());
+                        spannable.setSpan(new StrikethroughSpan(), j+1, i, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        noteText.setText(spannable);
+                        noteText.setSelection(i);
+                        //Toast.makeText(mContext,noteText.getText(),Toast.LENGTH_LONG).show();
+                        //noteText.getText().replace(j+1,i," "+b.substring(j+1,i));
+                    }
+                });
+                undoneBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int i=noteText.getSelectionStart(),j;
+                        String b=noteText.getText().toString().substring(0,i);
+                        for(j=i-1;j>=0;j--){
+                            if(b.charAt(j)=='•' || b.charAt(j)=='\n')
+                                break;
+                        }
+                        Spannable spannable =  new SpannableString(noteText.getText());
+                        //spannable.setSpan(new ForegroundColorSpan(Color.WHITE), j+1, i, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        //Toast.makeText(mContext,noteText.getText(),Toast.LENGTH_LONG).show();
+                        noteText.setText(spannable.toString());
+                        noteText.setSelection(i);
                     }
                 });
 
