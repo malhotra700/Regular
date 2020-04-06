@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -52,6 +53,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -86,6 +89,7 @@ public class TasksFragment extends Fragment {
     SpeechRecognizer mspeechRecog;
     Intent mSpeechRecogInt;
     Dialog mdialog,notesInfoDialog;
+    SharedPreferences preferences;
     ShimmerFrameLayout mShimmerViewContainer;
     GoogleSignInAccount acct;
 
@@ -130,6 +134,9 @@ public class TasksFragment extends Fragment {
 
         mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container);
         mShimmerViewContainer.startShimmer();
+
+        preferences = mActivity.getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = preferences.edit();
 
         noNotesAdded=view.findViewById(R.id.no_notes);
         recyclerView=(RecyclerView)view.findViewById(R.id.tasks_recycler);
@@ -187,6 +194,8 @@ public class TasksFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 noteHeading=mdialog.findViewById(R.id.task_heading);
+                editor.putString("PreviousText","");
+                editor.apply();
                 noteText=mdialog.findViewById(R.id.task_text);
                 addBulletBtn=mdialog.findViewById(R.id.task_bullet_btn);
                 doneBtn=mdialog.findViewById(R.id.task_done_btn);
@@ -224,28 +233,26 @@ public class TasksFragment extends Fragment {
                             if(b.charAt(j)=='•' || b.charAt(j)=='\n')
                                 break;
                         }
-                        Spannable spannable =  new SpannableString(noteText.getText().toString());
-                        spannable.setSpan(new StrikethroughSpan(), j+1, i, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        noteText.setText(spannable);
-                        noteText.setSelection(i);
+
+                  //      Spannable spannable = (Spannable) noteText.getText();
+                   //     spannable.setSpan(new StrikethroughSpan(), j+1, i, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                     //   noteText.setSelection(i);
                         //Toast.makeText(mContext,noteText.getText(),Toast.LENGTH_LONG).show();
-                        //noteText.getText().replace(j+1,i," "+b.substring(j+1,i));
+                        editor.putString("PreviousText",noteText.getText().toString());
+                        editor.apply();
+                        noteText.getText().replace(j+1,i,"");
+                        //noteText.setSelection(i);
                     }
                 });
                 undoneBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int i=noteText.getSelectionStart(),j;
-                        String b=noteText.getText().toString().substring(0,i);
-                        for(j=i-1;j>=0;j--){
-                            if(b.charAt(j)=='•' || b.charAt(j)=='\n')
-                                break;
-                        }
-                        Spannable spannable =  new SpannableString(noteText.getText());
                         //spannable.setSpan(new ForegroundColorSpan(Color.WHITE), j+1, i, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         //Toast.makeText(mContext,noteText.getText(),Toast.LENGTH_LONG).show();
-                        noteText.setText(spannable.toString());
-                        noteText.setSelection(i);
+                        if(!preferences.getString("PreviousText","").isEmpty()) {
+                            noteText.setText(preferences.getString("PreviousText", ""));
+                            noteText.setSelection(noteText.getText().length());
+                        }
                     }
                 });
 

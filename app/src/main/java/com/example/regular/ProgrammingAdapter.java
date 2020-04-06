@@ -60,6 +60,8 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
         String checkLabel=eventsAda.get(position).getLabel();
 
         prefs = context.getSharedPreferences("MyPref", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = prefs.edit();
+
         if(checkLabel.equals("Meet/Schedule")){
             holder.imageView.setImageResource(R.drawable.ic_meet);
             checkLabel="Meeting";
@@ -145,12 +147,24 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
                         int m = Integer.parseInt(temp[1]);
                         i.putExtra(AlarmClock.EXTRA_HOUR, h);
                         i.putExtra(AlarmClock.EXTRA_MINUTES, m);
+                        Calendar cal=Calendar.getInstance();
+                        cal.add(Calendar.DATE, 1);
+                        ArrayList<Integer> list=new ArrayList<Integer>();
+                        list.add(cal.get(Calendar.DAY_OF_WEEK));
+                        i.putExtra(AlarmClock.EXTRA_DAYS,list);
+                        i.putExtra(AlarmClock.EXTRA_SKIP_UI,true);
+                        i.putExtra(AlarmClock.EXTRA_VIBRATE,true);
+                        i.putExtra(AlarmClock.EXTRA_RINGTONE,AlarmClock.VALUE_RINGTONE_SILENT);
+                        Log.i("list",list.toString());
                         context.startActivity(i);
                     }
                 }
             });
         }
         if(selected.equals(prefs.getString("day1",""))) {
+            String put=prefs.getString("TodayEvents","");
+            editor.putString("TodayEvents",put+" "+holder.labelTV.getText().toString()+"-"+holder.headingTV.getText().toString());
+            editor.apply();
             if(!eventsAda.get(position).getStartEventTime().split(":")[0].isEmpty() && (Integer.parseInt(eventsAda.get(position).getStartEventTime().split(":")[0])*60 + Integer.parseInt(eventsAda.get(position).getStartEventTime().split(":")[1]))>temp)
                 holder.alarmView.setVisibility(View.VISIBLE);
             holder.alarmView.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +179,14 @@ public class ProgrammingAdapter extends RecyclerView.Adapter<ProgrammingAdapter.
                         int m = Integer.parseInt(temp[1]);
                         i.putExtra(AlarmClock.EXTRA_HOUR, h);
                         i.putExtra(AlarmClock.EXTRA_MINUTES, m);
+                        Calendar cal=Calendar.getInstance();
+                        ArrayList<Integer> list=new ArrayList<Integer>();
+                        list.add(cal.get(Calendar.DAY_OF_WEEK));
+                        i.putExtra(AlarmClock.EXTRA_DAYS,list);
+                        i.putExtra(AlarmClock.EXTRA_SKIP_UI,true);
+                        i.putExtra(AlarmClock.EXTRA_VIBRATE,true);
+                        i.putExtra(AlarmClock.EXTRA_RINGTONE,AlarmClock.VALUE_RINGTONE_SILENT);
+                        Log.i("list",list.toString());
                         context.startActivity(i);
                     }
                 }

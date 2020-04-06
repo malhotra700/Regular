@@ -75,7 +75,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="* Done button to  ̶s̶t̶r̶i̶k̶e̶t̶h̶r̶o̶u̶g̶h̶ a line as done."
+            android:text="* Done button to delete a line as done."
             android:padding="2dp"
             android:layout_margin="8dp"
             android:textColor="@color/white"
@@ -85,7 +85,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="* Un-Done button to reverse the effect of done button."
+            android:text="* Un-Done button to reverse the effect of the last done button."
             android:padding="2dp"
             android:layout_margin="8dp"
             android:textColor="@color/white"

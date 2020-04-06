@@ -102,6 +102,28 @@
             android:textSize="14sp"
             android:textStyle="italic"
             />
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:shadowColor="@color/cherry_tomato"
+            android:id="@+id/switch_notify"
+            android:text="Enable Reminder Notifications"
+            android:theme="@style/SCBSwitch"
+            android:padding="2dp"
+            android:layout_margin="8dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="* Enable recommended only if you want to keep the app running in background (i.e. not removing/killing the app from the recent apps tray)."
+            android:layout_margin="8dp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            />
 
     </LinearLayout>
 </LinearLayout>

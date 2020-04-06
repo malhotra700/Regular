@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -87,18 +88,23 @@ public class HomeActivity extends AppCompatActivity {
         preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         final SharedPreferences.Editor editor = preferences.edit();
 
-        createNotificationChannel();
-        Intent myIntent = new Intent(this , NotifyService.class);
-        //myIntent.setAction("MY_NOTIFICATION_MESSAGE");
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 100, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if(preferences.getBoolean("ReminderNotifications",false)) {
+            Log.i("notifyyy","done");
+            editor.putString("TodayEvents","");
+            editor.apply();
+            createNotificationChannel();
+            Intent myIntent = new Intent(this, NotifyService.class);
+            //myIntent.setAction("MY_NOTIFICATION_MESSAGE");
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 100, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,16);
-        calendar.set(Calendar.MINUTE,35);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 8);
+            calendar.set(Calendar.MINUTE, 30);
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY , pendingIntent);
-
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+            Toast.makeText(HomeActivity.this, "success", Toast.LENGTH_SHORT).show();
+        }
         if(!preferences.getBoolean("Done",true)){
         database= FirebaseDatabase.getInstance();
         acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);

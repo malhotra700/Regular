@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -40,6 +41,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
@@ -49,6 +52,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     FirebaseDatabase database;
     DatabaseReference ref;
     GoogleSignInAccount acct;
+    SharedPreferences preferences;
     Dialog mdialog;
     EditText noteHeading,noteText;
     Button saveNotesButton,addBulletBtn,doneBtn,undoneBtn;
@@ -81,6 +85,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         database= FirebaseDatabase.getInstance();
         ref=database.getReference("Notes");
         acct = GoogleSignIn.getLastSignedInAccount(context);
+        preferences = mActivity.getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = preferences.edit();
+
 
         holder.headingTV.setText(notesAda.get(position).getHeading());
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -107,6 +114,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                 noteHeading=mdialog.findViewById(R.id.task_heading);
                 noteHeading.setText(notesAda.get(position).getHeading());
                 noteText=mdialog.findViewById(R.id.task_text);
+                editor.putString("PreviousText","");
+                editor.apply();
                 addBulletBtn=mdialog.findViewById(R.id.task_bullet_btn);
                 doneBtn=mdialog.findViewById(R.id.task_done_btn);
                 undoneBtn=mdialog.findViewById(R.id.task_undone_btn);
@@ -145,10 +154,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                             if(b.charAt(j)=='•' || b.charAt(j)=='\n')
                                 break;
                         }
-                        Spannable spannable =  new SpannableString(noteText.getText().toString());
-                        spannable.setSpan(new StrikethroughSpan(), j+1, i, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        noteText.setText(spannable);
-                        noteText.setSelection(i);
+                        editor.putString("PreviousText",noteText.getText().toString());
+                        editor.apply();
+                        noteText.getText().replace(j+1,i,"");
                         //Toast.makeText(mContext,noteText.getText(),Toast.LENGTH_LONG).show();
                         //noteText.getText().replace(j+1,i," "+b.substring(j+1,i));
                     }
@@ -156,17 +164,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                 undoneBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int i=noteText.getSelectionStart(),j;
-                        String b=noteText.getText().toString().substring(0,i);
-                        for(j=i-1;j>=0;j--){
-                            if(b.charAt(j)=='•' || b.charAt(j)=='\n')
-                                break;
+                        if(!preferences.getString("PreviousText","").isEmpty()) {
+                            noteText.setText(preferences.getString("PreviousText", ""));
+                            noteText.setSelection(noteText.getText().length());
                         }
-                        Spannable spannable =  new SpannableString(noteText.getText());
-                        //spannable.setSpan(new ForegroundColorSpan(Color.WHITE), j+1, i, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        //Toast.makeText(mContext,noteText.getText(),Toast.LENGTH_LONG).show();
-                        noteText.setText(spannable.toString());
-                        noteText.setSelection(i);
                     }
                 });
 

@@ -87,7 +87,7 @@ public class CalendarFragment extends Fragment {
     DatePicker eventDatePicker;
     TimePicker startTimePicker,endTimePicker;
     Events events;
-    Switch aSwitch,starSwitch;
+    Switch aSwitch,starSwitch,notifySwitch;
     TextView startTimeTV,endTimeTV;
 
     FirebaseDatabase database;
@@ -392,6 +392,24 @@ public class CalendarFragment extends Fragment {
         infoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                notifySwitch=infoDialog.findViewById(R.id.switch_notify);
+                if(preferences.getBoolean("ReminderNotifications",false))
+                    notifySwitch.setChecked(preferences.getBoolean("ReminderNotifications",false));
+                notifySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(isChecked){
+                            editor.putBoolean("ReminderNotifications",isChecked);
+                            Toast.makeText(mContext,"Enabled",Toast.LENGTH_SHORT).show();
+                            editor.apply();
+                        }
+                        else{
+                            editor.putBoolean("ReminderNotifications",isChecked);
+                            Toast.makeText(mContext,"Disabled",Toast.LENGTH_SHORT).show();
+                            editor.apply();
+                        }
+                    }
+                });
                 infoDialog.show();
             }
         });
