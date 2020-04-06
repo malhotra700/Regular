@@ -62,36 +62,42 @@
                 android:backgroundTint="@color/dark_cherry1"
                 android:tint="@color/white"/>
         </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="* Button to mark a bullet \'•\' as \ndone \'✓\'and vice versa."
+                android:padding="2dp"
+                android:layout_margin="8dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="10dp"
+                android:padding="4dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_check"
+                android:background="@drawable/shape_badge_border"
+                android:backgroundTint="@color/dark_cherry1"
+                android:tint="@color/white"/>
+        </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="* Add Bullet button to add bullet( • ) to your note."
+            android:text="* Add Bullet button to add bullet \'•\' to your note."
             android:padding="2dp"
             android:layout_margin="8dp"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="italic"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="* Done button to delete a line as done."
-            android:padding="2dp"
-            android:layout_margin="8dp"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="italic"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="* Un-Done button to reverse the effect of the last done button."
-            android:padding="2dp"
-            android:layout_margin="8dp"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="italic"
-            />
+
+
 
         <TextView
             android:layout_width="wrap_content"

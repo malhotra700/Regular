@@ -83,13 +83,13 @@ public class TasksFragment extends Fragment {
     Notes notes;
     TextView noNotesAdded;
     EditText noteHeading,noteText;
-    Button saveNotesButton,addBulletBtn,doneBtn,undoneBtn;
+    Button saveNotesButton,addBulletBtn;
+    ImageButton doneBtn;
     ImageButton shareToWhatsappBtn,shareToGmailBtn,notesInfoBtn;
     ImageButton sttBtn;
     SpeechRecognizer mspeechRecog;
     Intent mSpeechRecogInt;
     Dialog mdialog,notesInfoDialog;
-    SharedPreferences preferences;
     ShimmerFrameLayout mShimmerViewContainer;
     GoogleSignInAccount acct;
 
@@ -135,8 +135,6 @@ public class TasksFragment extends Fragment {
         mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container);
         mShimmerViewContainer.startShimmer();
 
-        preferences = mActivity.getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        final SharedPreferences.Editor editor = preferences.edit();
 
         noNotesAdded=view.findViewById(R.id.no_notes);
         recyclerView=(RecyclerView)view.findViewById(R.id.tasks_recycler);
@@ -194,12 +192,9 @@ public class TasksFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 noteHeading=mdialog.findViewById(R.id.task_heading);
-                editor.putString("PreviousText","");
-                editor.apply();
                 noteText=mdialog.findViewById(R.id.task_text);
                 addBulletBtn=mdialog.findViewById(R.id.task_bullet_btn);
                 doneBtn=mdialog.findViewById(R.id.task_done_btn);
-                undoneBtn=mdialog.findViewById(R.id.task_undone_btn);
                 sttBtn=mdialog.findViewById(R.id.task_stt_btn);
                 noteText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                     @Override
@@ -208,12 +203,10 @@ public class TasksFragment extends Fragment {
                             addBulletBtn.setVisibility(View.VISIBLE);
                             sttBtn.setVisibility(View.VISIBLE);
                             doneBtn.setVisibility(View.VISIBLE);
-                            undoneBtn.setVisibility(View.VISIBLE);
                         } else {
                             addBulletBtn.setVisibility(View.GONE);
                             sttBtn.setVisibility(View.GONE);
                             doneBtn.setVisibility(View.GONE);
-                            undoneBtn.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -228,31 +221,23 @@ public class TasksFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         int i=noteText.getSelectionStart(),j;
+                        char a=' ';
                         String b=noteText.getText().toString().substring(0,i);
                         for(j=i-1;j>=0;j--){
-                            if(b.charAt(j)=='•' || b.charAt(j)=='\n')
+                            if(b.charAt(j)=='•') {
+                                a='•';
                                 break;
+                            }
+                            if(b.charAt(j)=='✓') {
+                                a='✓';
+                                break;
+                            }
                         }
-
-                  //      Spannable spannable = (Spannable) noteText.getText();
-                   //     spannable.setSpan(new StrikethroughSpan(), j+1, i, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                     //   noteText.setSelection(i);
-                        //Toast.makeText(mContext,noteText.getText(),Toast.LENGTH_LONG).show();
-                        editor.putString("PreviousText",noteText.getText().toString());
-                        editor.apply();
-                        noteText.getText().replace(j+1,i,"");
+                        if(a!=' ' && a=='✓')
+                            noteText.getText().replace(j,j+1,"•");
+                        if(a!=' ' && a=='•')
+                            noteText.getText().replace(j,j+1,"✓");
                         //noteText.setSelection(i);
-                    }
-                });
-                undoneBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //spannable.setSpan(new ForegroundColorSpan(Color.WHITE), j+1, i, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        //Toast.makeText(mContext,noteText.getText(),Toast.LENGTH_LONG).show();
-                        if(!preferences.getString("PreviousText","").isEmpty()) {
-                            noteText.setText(preferences.getString("PreviousText", ""));
-                            noteText.setSelection(noteText.getText().length());
-                        }
                     }
                 });
 

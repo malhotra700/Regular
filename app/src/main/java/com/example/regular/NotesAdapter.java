@@ -52,10 +52,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     FirebaseDatabase database;
     DatabaseReference ref;
     GoogleSignInAccount acct;
-    SharedPreferences preferences;
     Dialog mdialog;
     EditText noteHeading,noteText;
-    Button saveNotesButton,addBulletBtn,doneBtn,undoneBtn;
+    Button saveNotesButton,addBulletBtn;
+    ImageButton doneBtn;
     ImageButton shareToWhatsappBtn,shareToGmailBtn;
     LinearLayout extraBtns;
     ImageButton sttBtn;
@@ -85,8 +85,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         database= FirebaseDatabase.getInstance();
         ref=database.getReference("Notes");
         acct = GoogleSignIn.getLastSignedInAccount(context);
-        preferences = mActivity.getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        final SharedPreferences.Editor editor = preferences.edit();
 
 
         holder.headingTV.setText(notesAda.get(position).getHeading());
@@ -114,11 +112,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                 noteHeading=mdialog.findViewById(R.id.task_heading);
                 noteHeading.setText(notesAda.get(position).getHeading());
                 noteText=mdialog.findViewById(R.id.task_text);
-                editor.putString("PreviousText","");
-                editor.apply();
                 addBulletBtn=mdialog.findViewById(R.id.task_bullet_btn);
                 doneBtn=mdialog.findViewById(R.id.task_done_btn);
-                undoneBtn=mdialog.findViewById(R.id.task_undone_btn);
                 sttBtn=mdialog.findViewById(R.id.task_stt_btn);
                 noteText=mdialog.findViewById(R.id.task_text);
                 noteText.setText(notesAda.get(position).getText());
@@ -129,12 +124,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                             addBulletBtn.setVisibility(View.VISIBLE);
                             sttBtn.setVisibility(View.VISIBLE);
                             doneBtn.setVisibility(View.VISIBLE);
-                            undoneBtn.setVisibility(View.VISIBLE);
                         } else {
                             addBulletBtn.setVisibility(View.GONE);
                             sttBtn.setVisibility(View.GONE);
                             doneBtn.setVisibility(View.GONE);
-                            undoneBtn.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -149,25 +142,22 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
                     @Override
                     public void onClick(View v) {
                         int i=noteText.getSelectionStart(),j;
+                        char a=' ';
                         String b=noteText.getText().toString().substring(0,i);
                         for(j=i-1;j>=0;j--){
-                            if(b.charAt(j)=='•' || b.charAt(j)=='\n')
+                            if(b.charAt(j)=='•') {
+                                a='•';
                                 break;
+                            }
+                            if(b.charAt(j)=='✓') {
+                                a='✓';
+                                break;
+                            }
                         }
-                        editor.putString("PreviousText",noteText.getText().toString());
-                        editor.apply();
-                        noteText.getText().replace(j+1,i,"");
-                        //Toast.makeText(mContext,noteText.getText(),Toast.LENGTH_LONG).show();
-                        //noteText.getText().replace(j+1,i," "+b.substring(j+1,i));
-                    }
-                });
-                undoneBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if(!preferences.getString("PreviousText","").isEmpty()) {
-                            noteText.setText(preferences.getString("PreviousText", ""));
-                            noteText.setSelection(noteText.getText().length());
-                        }
+                        if(a!=' ' && a=='✓')
+                            noteText.getText().replace(j,j+1,"•");
+                        if(a!=' ' && a=='•')
+                            noteText.getText().replace(j,j+1,"✓");
                     }
                 });
 

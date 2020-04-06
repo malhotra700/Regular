@@ -129,7 +129,7 @@
             android:layout_height="wrap_content"
             android:shadowColor="@color/cherry_tomato"
             android:id="@+id/switch_breathing"
-            android:text="Guided Breathing "
+            android:text="Voice Guided Breathing "
             android:layout_margin="8dp"
             android:textColor="@color/white"
             android:textStyle="bold"
