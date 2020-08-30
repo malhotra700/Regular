@@ -2,6 +2,8 @@
 
 **REGULAR - Event Calendar, Planner, To-do Notes & Stress Management App** is a free and low size app for managing and organizing your daily tasks, to-do lists, notes, reminders, checklists, calendar events, grocery or shopping lists etc. Track how busy you are in the next seven days. Experience lower stress levels, less anxiety, and more restful sleep with our voice guided breathing exercise and positive articles updated daily. Track your progress and receive badges to stay motivated.
 
+https://play.google.com/store/apps/details?id=anant.example.regular
+
 
 ### KEY FEATURES
 
