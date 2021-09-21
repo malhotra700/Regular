@@ -30,7 +30,7 @@
         android:id="@+id/breathing_tv"
         android:padding="8dp"
         android:background="@drawable/shape_rectangle_border" />
-    <com.example.regular.Chronometer
+    <anant.example.regular.Chronometer
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/stopwatch_time"
