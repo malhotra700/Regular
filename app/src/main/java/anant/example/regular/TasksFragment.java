@@ -1,5 +1,6 @@
 package anant.example.regular;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -179,6 +180,7 @@ public class TasksFragment extends Fragment {
 
         floatingActionButton=view.findViewById(R.id.fab_task);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public void onClick(View v) {
                 noteHeading=mdialog.findViewById(R.id.task_heading);
